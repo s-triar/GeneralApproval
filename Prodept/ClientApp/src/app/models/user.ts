@@ -1,7 +1,11 @@
 export class User {
-  Nik: String;
-  Name: String;
-  Email: String;
-  Phone: String;
-  Url: String;
+  Nik: string;
+  Name: string;
+  Email: string;
+  Phone: string;
+  Token: string;
+  PhotoUrl: string;
+  public constructor(init?: Partial<User>) {
+    Object.assign(this, init);
+  }
 }

@@ -1,8 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { HomeComponent } from "./pages/home/home.component";
-import { CounterComponent } from "./lama/counter/counter.component";
-import { FetchDataComponent } from "./lama/fetch-data/fetch-data.component";
 import { LoginComponent } from "./pages/auth/login/login.component";
 import { RegisterComponent } from "./pages/auth/register/register.component";
 import { ForgetPasswordComponent } from "./pages/auth/forget-password/forget-password.component";

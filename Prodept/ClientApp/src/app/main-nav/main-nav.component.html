@@ -8,7 +8,7 @@
     [opened]="isHandset$ | async"
   >
     <app-user-side-nav
-      [Url]="user.Url"
+      [Url]="user.PhotoUrl"
       [Nik]="user.Nik"
       [Name]="user.Name"
     ></app-user-side-nav>
@@ -62,7 +62,7 @@
         (click)="ToggleTheme()"
       >
         <mat-icon>{{
-          !(isInDarkMode$ | async) ? "wb_sunny" : "brightness_2"
+          (theme$ | async).IsDefault ? "wb_sunny" : "brightness_2"
         }}</mat-icon>
       </button>
     </mat-toolbar>

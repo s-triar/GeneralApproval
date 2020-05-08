@@ -1,25 +1,31 @@
-import { Component, OnInit, Renderer2 } from "@angular/core";
+import { Component, OnInit, Renderer2, OnDestroy } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Observable } from "rxjs";
 import { map, shareReplay } from "rxjs/operators";
 import { User } from "../models/user";
-import { DOCUMENT } from "@angular/common";
-import { ThemeService } from "../services/theme.service";
+import { Store, Select } from "@ngxs/store";
+import { ChangeTheme, ApplyTheme } from "../actions/theme.action";
+import { state } from "@angular/animations";
+import { ThemeState } from "../states/theme.state";
+import { Theme } from "../models/theme";
 
 @Component({
   selector: "app-main-nav",
   templateUrl: "./main-nav.component.html",
   styleUrls: ["./main-nav.component.scss"],
 })
-export class MainNavComponent implements OnInit {
+export class MainNavComponent implements OnInit, OnDestroy {
+  // @Select(ThemeState.isDefault) theme$: Observable<boolean>;
+  @Select((state) => state.theme) theme$;
+
   user: User = {
     Nik: "2015169765",
     Email: "sulaimantriarjo@indomaret.co.id",
     Name: "Sulaiman Triarjo",
     Phone: "085755519123",
-    Url: "assets/defaults/user-default.png",
+    PhotoUrl: "assets/defaults/user-default.png",
+    Token: "",
   };
-  isInDarkMode$: Observable<boolean>;
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -30,15 +36,14 @@ export class MainNavComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private themeService: ThemeService,
-    private renderer: Renderer2
+    private _renderer: Renderer2,
+    private _store: Store
   ) {}
+  ngOnDestroy(): void {}
 
-  ngOnInit() {
-    this.isInDarkMode$ = this.themeService.isInDarkMode$;
-  }
+  ngOnInit() {}
 
   ToggleTheme() {
-    this.themeService.ToggleTheme(this.renderer);
+    this._store.dispatch([new ChangeTheme(), new ApplyTheme(this._renderer)]);
   }
 }

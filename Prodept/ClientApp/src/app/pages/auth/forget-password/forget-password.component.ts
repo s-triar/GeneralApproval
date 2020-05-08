@@ -13,7 +13,7 @@ export class ForgetPasswordComponent implements OnInit {
   });
   constructor(private fb: FormBuilder) {}
   ngOnInit(): void {}
-  get email() {
+  get Email() {
     return this.forgetForm.get("Email");
   }
 }
