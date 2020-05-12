@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Prodept.Commons
+namespace Prodept.Commons.Interfaces
 {
     public interface IUserAuth
     {
