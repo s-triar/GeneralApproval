@@ -1,0 +1,10 @@
+<div class="container" >
+    <h1 class="mat-h1">{{data.title}}</h1>
+    <h2 class="mat-h2">{{data.title}}</h2>
+    <app-generator-detail [datas]="data.data"></app-generator-detail>
+    <mat-divider style="margin-top: 15px;"></mat-divider>
+    <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="0px" style="padding-bottom:20px; padding-top:40px">
+        <button mat-raised-button color="primary">Approve</button>
+        <button mat-raised-button color="warn">Not Approve</button>
+    </div>
+</div>

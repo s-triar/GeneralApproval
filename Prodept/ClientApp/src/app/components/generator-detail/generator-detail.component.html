@@ -1,0 +1,10 @@
+
+<div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="14px" fxFill>
+    <ng-container *ngFor="let item of datas">
+        <app-form-input [data]="item" *ngIf="isFormInput(item.type)"></app-form-input>
+        <app-form-date [data]="item" *ngIf="isFormDate(item.type)"></app-form-date>
+        <app-form-text-box [data]="item" *ngIf="isFormTextArea(item.type)"></app-form-text-box>
+        <app-form-list [data]="item" *ngIf="isFormList(item.type)"></app-form-list>
+        <app-form-table [data]="item" *ngIf="isFormTable(item.type)"></app-form-table>
+    </ng-container>
+</div>

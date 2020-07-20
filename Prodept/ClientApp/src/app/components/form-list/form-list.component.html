@@ -1,0 +1,6 @@
+<div fxFlexFill>
+<mat-label class="mat-caption">{{data.label}}</mat-label>
+<mat-list style="max-height: 500px; overflow:auto" dense>
+    <mat-list-item *ngFor="let item of data.data">{{item}}</mat-list-item>
+</mat-list>
+</div>

@@ -1,0 +1,14 @@
+<h2 class="mat-h1">{{data.title}}</h2>
+
+<ng-container
+  *ngIf="data.dataType === dtENUM.LIST;then datalist; else datatab">
+</ng-container>
+
+<ng-template #datalist>
+    <app-data-list [data]="data.data"></app-data-list>
+</ng-template>
+
+<ng-template #datatab>
+    <app-data-tab [data]="data.data"></app-data-tab>
+</ng-template>
+

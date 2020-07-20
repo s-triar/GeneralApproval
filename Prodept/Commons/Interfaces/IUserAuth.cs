@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Prodept.Models;
-using Prodept.Models.Authentication;
+//using Prodept.Models.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace Prodept.Commons.Interfaces
 {
     public interface IUserAuth
     {
-        UserAuth Login([FromBody] UserLogin req);
+        //UserAuth Login([FromBody] UserLogin req);
         IdentityResult Register([FromBody] UserRegister req);
     }
 }

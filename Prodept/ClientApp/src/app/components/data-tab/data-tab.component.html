@@ -1,0 +1,14 @@
+<mat-tab-group mat-align-tabs="start">
+    <ng-container *ngFor="let d of data">
+        <mat-tab [label]="d.title">
+            <ng-container *ngIf="d.dataType === dtENUM.LIST">
+                <app-data-list [data]="d.data"></app-data-list>
+            </ng-container>
+            
+            <ng-container *ngIf="d.dataType === dtENUM.TAB">
+                <app-data-tab [data]="d.data"></app-data-tab>
+            </ng-container>
+        </mat-tab>
+    </ng-container>
+</mat-tab-group>
+  

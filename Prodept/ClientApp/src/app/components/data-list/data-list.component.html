@@ -1,0 +1,27 @@
+<div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+        <mat-form-field appearance="fill">
+          <mat-label>Cari Data</mat-label>
+          <input matInput type="text" [matAutocomplete]="auto"/>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of data" [value]="option">
+              {{option.title}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-mini-fab>
+          <mat-icon>search</mat-icon>
+        </button>
+    </div>
+    <mat-selection-list #shoes [multiple]="false" class="data-list">
+        <mat-list-option *ngFor="let d of data" [value]="d" >
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2px" style="margin: 3px 3px;">
+              <div fxFlex="grow" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="2px">
+                <div class="mat-h3">{{d.title}}</div>
+                <div class="mat-caption">{{d.subtitle}}</div>
+              </div>
+              <div fxFlex>{{d.status}}</div>
+          </div>
+        </mat-list-option>
+    </mat-selection-list>
+</div>

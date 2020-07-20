@@ -5,7 +5,7 @@
 }
 
 .sidenav {
-  width: 200px;
+  width: 300px;
 }
 
 .sidenav .mat-toolbar {
@@ -24,7 +24,9 @@
 .child a span {
   padding-left: 16px;
 }
-.active {
+.router-link-active {
+  $primary: map-get($light-theme, primary);
+  background: mat-color($primary, lighter);
 }
 
 .show {
@@ -32,3 +34,46 @@
   background-color: mat-color($primary, lighter);
   display: block;
 }
+
+.daftar-projek{
+  height: calc(100% - 205px) !important;
+
+  overflow-y: auto;
+}
+.pencarian-projek{
+  padding: 2px 7px;
+}
+
+.pencarian-projek > .mat-form-field {
+  width: 100%;
+}
+
+.simple-profile{
+  $primary: map-get($light-theme, primary);
+  background: mat-color($primary, lighter);
+  padding: 5px 15px;
+}
+
+
+  /* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #929292be;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  $primary: map-get($light-theme, primary);
+  background: mat-color($primary, darker);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  $accent: map-get($light-theme, accent);
+  background: mat-color($accent, darker);
+}
+

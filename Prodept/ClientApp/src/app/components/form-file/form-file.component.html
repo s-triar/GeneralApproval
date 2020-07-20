@@ -1,0 +1,7 @@
+<mat-form-field appearance="legacy">
+    <mat-label>{{data.label}}</mat-label>
+    <input matInput disabled [value]="data.data" [name]="data.name">
+    <button mat-icon-button color="primary" matSuffix (click)="download()">
+        <mat-icon>get_app</mat-icon>
+    </button>
+</mat-form-field>

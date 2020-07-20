@@ -1,0 +1,34 @@
+<ng-container
+  *ngIf="data.range === true;then daterange; else datesingle">
+</ng-container>
+
+<ng-template #daterange>
+  <mat-form-field appearance="legacy" fxFlex.lt-sm ="100">
+    <mat-label>{{data.label}}</mat-label>
+    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+      <input matStartDate formControlName="start" placeholder="Start date" [readonly]="data.disabled">
+      <input matEndDate formControlName="end" placeholder="End date" [readonly]="data.disabled">
+    </mat-date-range-input>
+    <mat-hint>Bulan-Tanggal-Tahun</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="data.disabled" mat-mini-fab></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>  
+    <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Tanggal Mulai Tidak Valid</mat-error>
+    <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Tanggal Selesai Tidak Valid</mat-error>
+</mat-form-field>
+</ng-template>
+
+
+<ng-template #datesingle>
+  <mat-form-field appearance="legacy" fxFlex.lt-sm="100">
+    <mat-label>{{data.label}}</mat-label>
+    <input matInput [matDatepicker]="picker" [value]="data.data[0]" [readonly]="data.disabled">
+    <mat-hint>Bulan-Tanggal-Tahun</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="data.disabled" ></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+</ng-template>
+
+
+
+
+

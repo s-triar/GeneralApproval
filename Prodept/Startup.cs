@@ -15,6 +15,11 @@ using Prodept.Models;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using IdentityServer4.AccessTokenValidation;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Prodept.Commons.Interfaces;
+using Prodept.Commons.Services;
 
 namespace Prodept
 {
@@ -30,53 +35,66 @@ namespace Prodept
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentityServer()
-                .AddInMemoryApiResources()
-                .AddInMemoryClients()
-                .AddDeveloperSigningCredential();
+            services.AddDbContext<AppDbContext>(config =>
+            {
+                config.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
-            //services.AddDbContext<AppDbContext>(config =>
+            //services.AddAuthentication(config =>
             //{
-            //    config.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
-            //});
-            //services.Configure<IdentityOptions>(options =>
-            //{
-            //    options.Password.RequireDigit = false;
-            //    options.Password.RequiredLength = 3;
-            //    options.Password.RequireLowercase = true;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequiredUniqueChars = 0;
-            //});
-            //services.AddIdentity<IdentityUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<AppDbContext>()
-            //    .AddDefaultTokenProviders();
-
-            //// configure strongly typed settings objects
-            //var appSettingsSection = Configuration.GetSection("AppSettings");
-            //services.Configure<AppSetting>(appSettingsSection);
-
-            //// configure jwt authentication
-            //var appSettings = appSettingsSection.Get<AppSetting>();
-            //var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            //services.AddAuthentication(x =>
-            //{
-            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    config.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+            //    config.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             //})
-            //.AddJwtBearer(x =>
+            //.AddJwtBearer()
+            //.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, config =>
             //{
-            //    x.RequireHttpsMetadata = false;
-            //    x.SaveToken = true;
-            //    x.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuerSigningKey = true,
-            //        IssuerSigningKey = new SymmetricSecurityKey(key),
-            //        ValidateIssuer = false,
-            //        ValidateAudience = false
-            //    };
+            //    config.Authority = "https://localhost:5001/";
+
+            //    config.ClientId = "0f521970-ca6c-4bc3-a0cb-cb8fc0e938e8shkp";
+            //    config.ClientSecret = "43dhaxAO4KQ57wIAWFT63Aq";
+            //    config.SaveTokens = true;
+            //    config.ResponseType = "code";
             //});
-            //services.AddAuthorization();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+              {
+                  options.Authority = "https://localhost:44308/";
+                  options.Audience = "general_approval";
+                  options.TokenValidationParameters = new TokenValidationParameters
+                  {
+                      ValidateAudience = false
+                  };
+              });
+            services.AddHttpClient();
+
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("lihat-daftar-project", policy =>
+            //    {
+            //        policy.RequireClaim(ClaimTypes.Role, "general_approval:lihat-daftar-project");
+            //    });
+            //    options.AddPolicy("lihat-project", policy =>
+            //    {
+            //        policy.RequireClaim(ClaimTypes.Role, "general_approval:lihat-project");
+            //    });
+            //    options.AddPolicy("lihat-detail-permintaan", policy =>
+            //    {
+            //        policy.RequireClaim(ClaimTypes.Role, "general_approval:lihat-detail-permintaan");
+            //    });
+            //    options.AddPolicy("lihat-detail-permintaan", policy =>
+            //    {
+            //        policy.RequireClaim(ClaimTypes.Role, "general_approval:lihat-detail-permintaan");
+            //    });
+            //    options.AddPolicy("setujui-permintaan", policy =>
+            //    {
+            //        policy.RequireClaim(ClaimTypes.Role, "general_approval:setujui-permintaan");
+            //    });
+            //    options.AddPolicy("tolak-permintaan", policy =>
+            //    {
+            //        policy.RequireClaim(ClaimTypes.Role, "general_approval:tolak-permintaan");
+            //    });
+            //});
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -85,6 +103,9 @@ namespace Prodept
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.AddSingleton<IUserDeviceService, UserDeviceService>();
+            services.AddSingleton<IProjectRequestService, ProjectRequestService>();
+            services.AddSingleton<INotificationService, NotificationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,8 +127,8 @@ namespace Prodept
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseIdentityServer();
-            //app.UseAuthentication();
+            //app.UseIdentityServer();
+            app.UseAuthentication();
             
 
             app.UseMvc(routes =>
