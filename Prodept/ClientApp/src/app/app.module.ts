@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
@@ -39,6 +38,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SnackbarNotifComponent } from './components/snackbar-notif/snackbar-notif.component';
 import { DialogLoadingComponent } from './components/dialog-loading/dialog-loading.component';
+import { ApprovalConfirmationComponent } from './components/approval-confirmation/approval-confirmation.component';
+import { ApprovalWarningComponent } from './components/approval-warning/approval-warning.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
@@ -70,7 +71,9 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     GeneratorDetailComponent,
     SnackbarNotifComponent,
     DialogLoadingComponent,
-    DashboardComponent
+    DashboardComponent,
+    ApprovalConfirmationComponent,
+    ApprovalWarningComponent,
   ],
   entryComponents: [
     SnackbarNotifComponent,
@@ -88,6 +91,8 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     FormRadioComponent,
     FormDateComponent,
     FormFileComponent,
+    ApprovalConfirmationComponent,
+    ApprovalWarningComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -99,7 +104,9 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     MaterialModule,
     HttpClientModule,
     ReactiveFormsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

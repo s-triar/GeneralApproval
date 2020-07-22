@@ -1,10 +1,67 @@
-
 <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="14px" fxFill>
-    <ng-container *ngFor="let item of datas">
-        <app-form-input [data]="item" *ngIf="isFormInput(item.type)"></app-form-input>
-        <app-form-date [data]="item" *ngIf="isFormDate(item.type)"></app-form-date>
-        <app-form-text-box [data]="item" *ngIf="isFormTextArea(item.type)"></app-form-text-box>
-        <app-form-list [data]="item" *ngIf="isFormList(item.type)"></app-form-list>
-        <app-form-table [data]="item" *ngIf="isFormTable(item.type)"></app-form-table>
-    </ng-container>
+  <ng-container *ngFor="let item of datas">
+    <app-form-input
+      [data]="item"
+      *ngIf="isFormInput(item.type)"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxLayoutGap="0px"
+    ></app-form-input>
+    <app-form-date
+      [data]="item"
+      *ngIf="isFormDate(item.type)"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxLayoutGap="0px"
+    ></app-form-date>
+    <app-form-text-box
+      [data]="item"
+      *ngIf="isFormTextArea(item.type)"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxLayoutGap="0px"
+    ></app-form-text-box>
+    <app-form-list
+      [data]="item"
+      *ngIf="isFormList(item.type)"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxLayoutGap="0px"
+    ></app-form-list>
+    <app-form-table
+      [data]="item"
+      *ngIf="isFormTable(item.type)"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxLayoutGap="0px"
+    ></app-form-table>
+    <app-form-select
+      [data]="item"
+      *ngIf="isFormSelect(item.type)"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxLayoutGap="0px"
+    ></app-form-select>
+    <app-form-file
+      [data]="item"
+      *ngIf="isFormFile(item.type)"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxLayoutGap="0px"
+    ></app-form-file>
+    <app-form-radio
+      [data]="item"
+      *ngIf="isFormRadio(item.type)"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxLayoutGap="0px"
+    ></app-form-radio>
+    <app-form-checkbox
+      [data]="item"
+      *ngIf="isFormCheckbox(item.type)"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxLayoutGap="0px"
+    ></app-form-checkbox>
+  </ng-container>
 </div>
