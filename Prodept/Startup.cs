@@ -59,8 +59,8 @@ namespace Prodept
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
               {
-                  options.Authority = "https://localhost:44308/";
-                  options.Audience = "general_approval";
+                  options.Authority = Configuration.GetSection("CentralAuth").Value;
+                  options.Audience = Configuration.GetSection("IdentityServerAccount").GetSection("ApiName").Value;
                   options.TokenValidationParameters = new TokenValidationParameters
                   {
                       ValidateAudience = false

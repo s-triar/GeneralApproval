@@ -4,11 +4,11 @@ import { SwUpdate, SwPush } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class DashboardComponent implements OnInit {
 
   constructor(
     private _httpClient: HttpClient,
@@ -19,8 +19,11 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     // this.pushSubscription();
   }
-
-  pushSubscription() {
+  GetNotif() {
+    console.log('fafawfa');
+    this._httpClient.get('https://localhost:44389/api/Notification/Send');
+  }
+  ShowSubscription() {
     if (!this._swPush.isEnabled) {
       console.log('Notification is disabled');
       return;
@@ -28,7 +31,7 @@ export class HomeComponent implements OnInit {
     this._swPush.requestSubscription({
       serverPublicKey: environment.webPush.publicKey
     })
-    .then(sub => console.log(sub))
+    .then(sub => console.log(JSON.stringify(sub)))
     .catch(err => console.log(err))
     ;
   }

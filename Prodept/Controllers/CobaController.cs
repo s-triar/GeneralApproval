@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using IdentityServer4.Models;
@@ -84,15 +85,23 @@ namespace Prodept.Controllers
         }
         [Authorize(Roles ="general_approval:=test")]
         [HttpGet("[action]")]
-        public async Task<IActionResult> TestAuth()
+        public async Task<List<dynamic>> TestAuth()
         {
-            return Ok("from testAuth tst");
+            List<dynamic> tes = new List<dynamic>();
+            tes.Add(new { gagae = "gagag", ggg = 1 });
+            tes.Add(new { gagaqqqe = "gagag", gagagg = 1 });
+            return tes;
         }
 
         [Authorize]
         [HttpGet("[action]")]
         public async Task<IActionResult> TestAuth2()
         {
+            var u = User.Identity.Name;
+            //var t  = (ClaimsPrincipal)HttpContext.User.Claims;
+            var s = HttpContext.User.Claims;
+            var k = s.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+            var nik = k.Value;
             return Ok("from testAuth2 tst");
         }
     }

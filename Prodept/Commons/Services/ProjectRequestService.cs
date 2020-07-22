@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Prodept.Commons.Interfaces;
 using Prodept.Commons.Models;
 using Prodept.Datas;
@@ -23,11 +24,19 @@ namespace Prodept.Commons.Services
             return this._context.SaveChanges();
         }
 
+        public IDbContextTransaction GetTransaction()
+        {
+            return this._context.Database.BeginTransaction();
+        }
+
         public void Add(RequestList entity)
         {
             this._context.RequestLists.Add(entity);
         }
-
+        public void Update(RequestList entity)
+        {
+            this._context.RequestLists.Update(entity);
+        }
         public void Remove(RequestList entity)
         {
             var temp = this._context.RequestLists.FirstOrDefault(x => x.ApiName == entity.ApiName && x.Nik == entity.Nik && x.Id == entity.Id);

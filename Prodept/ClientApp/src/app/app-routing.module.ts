@@ -7,14 +7,15 @@ import { ForgetPasswordComponent } from './pages/auth/forget-password/forget-pas
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { ListComponent } from './pages/list/list.component';
 import { DetailComponent } from './pages/detail/detail.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
     path: '',
     component: MainNavComponent,
     children: [
-      // { path: '', redirectTo: '/detail', pathMatch: 'full' },
-      { path: '', component: HomeComponent },
+      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent },
 
       { path: 'login', component: LoginComponent },
       // { path: 'register', component: RegisterComponent },

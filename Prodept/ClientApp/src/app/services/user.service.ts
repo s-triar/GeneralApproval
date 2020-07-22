@@ -12,6 +12,6 @@ export class UserService {
   getUserDetail(payload: string): Observable<any> {
     let header: HttpHeaders = new HttpHeaders();
     header = header.set('reqnoloadingdialog', 'true');
-    return this._http.get(`api/User/GetDetail`, {headers: header, params: {'Kode': payload}});
+    return this._http.get(`api/Auth/GetUserProfile`, {headers: header, params: {'Kode': payload}});
   }
 }

@@ -1,4 +1,5 @@
-﻿using Prodept.Commons.Models;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using Prodept.Commons.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Prodept.Commons.Interfaces
         int save();
         void Add(RequestList entity);
         void Remove(RequestList entity);
+        void Update(RequestList entity);
+        IDbContextTransaction GetTransaction();
         RequestList GetSpecificId(RequestList entity);
         IEnumerable<RequestList> GetSpecificUser(RequestList entity);
         IEnumerable<RequestList> GetSpecificProject(RequestList entity);

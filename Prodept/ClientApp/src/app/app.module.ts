@@ -39,6 +39,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SnackbarNotifComponent } from './components/snackbar-notif/snackbar-notif.component';
 import { DialogLoadingComponent } from './components/dialog-loading/dialog-loading.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { DialogLoadingComponent } from './components/dialog-loading/dialog-loadi
     FormFileComponent,
     GeneratorDetailComponent,
     SnackbarNotifComponent,
-    DialogLoadingComponent
+    DialogLoadingComponent,
+    DashboardComponent
   ],
   entryComponents: [
     SnackbarNotifComponent,
