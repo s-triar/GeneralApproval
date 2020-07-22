@@ -1,1 +1,12 @@
-<p>form-checkbox works!</p>
+<div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8px">
+  <label class="custom-label-form">{{ data.label }}</label>
+  <mat-checkbox
+    color="primary"
+    *ngFor="let item of data.data"
+    [disabled]="item.disabled"
+    [checked]="item.checked"
+    [value]="item.data"
+    [name]="name"
+    >{{ item.label }}</mat-checkbox
+  >
+</div>

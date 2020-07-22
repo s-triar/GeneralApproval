@@ -29,8 +29,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-
-
 .grid-container {
   margin: 20px;
 }
@@ -53,21 +51,22 @@ body {
   text-align: center;
 }
 
-.dialog-header-title{
-  font-size: 25px;font-weight:400;
+.dialog-header-title {
+  font-size: 25px;
+  font-weight: 400;
 }
 
 .mat-table {
   width: 100%;
   overflow: auto;
-  font-family: "Open Sans", sans-serif
+  font-family: "Open Sans", sans-serif;
 }
 
 .mat-container {
   height: 592px;
   overflow: auto;
 }
-.form-column-filter{
+.form-column-filter {
   margin-top: 5px;
 }
 
@@ -84,16 +83,25 @@ body {
   justify-content: center;
 }
 
-.mat-header-cell, .mat-cell{
+.mat-header-cell,
+.mat-cell {
   margin-left: 5px;
   margin-right: 5px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-.mat-sort-header-container, .mat-header-cell > mat-form-field{
+.mat-sort-header-container,
+.mat-header-cell > mat-form-field {
   padding-left: 5px;
   padding-right: 5px;
 }
 
-.pointer-cursor { cursor: pointer; }
+.pointer-cursor {
+  cursor: pointer;
+}
+
+.custom-label-form {
+  font-weight: 700;
+  font-size: medium;
+}

@@ -1,18 +1,38 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormTable, FormCheckBox, FormDate, FormFile, FormInput, FormList, FormRadio, FormSelect, FormTextArea, DetailDataType } from 'src/app/datas/detail-data';
+import { Component, OnInit, Input } from "@angular/core";
+import {
+  FormTable,
+  FormCheckBox,
+  FormDate,
+  FormFile,
+  FormInput,
+  FormList,
+  FormRadio,
+  FormSelect,
+  FormTextArea,
+} from "src/app/models/detail-data";
+import { DetailDataType } from "src/app/models/enums/detail-data-enum";
 
 @Component({
-  selector: 'app-generator-detail',
-  templateUrl: './generator-detail.component.html',
-  styleUrls: ['./generator-detail.component.scss']
+  selector: "app-generator-detail",
+  templateUrl: "./generator-detail.component.html",
+  styleUrls: ["./generator-detail.component.scss"],
 })
 export class GeneratorDetailComponent implements OnInit {
-  @Input() datas: (FormTable|FormCheckBox|FormDate|FormFile|FormInput|FormList|FormRadio|FormSelect|FormTextArea)[];
+  @Input() datas: (
+    | FormTable
+    | FormCheckBox
+    | FormDate
+    | FormFile
+    | FormInput
+    | FormList
+    | FormRadio
+    | FormSelect
+    | FormTextArea
+  )[];
   types = DetailDataType;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   isFormList(data) {
     return data === this.types.LIST;
   }
@@ -28,7 +48,7 @@ export class GeneratorDetailComponent implements OnInit {
   isFormInput(data) {
     return data === this.types.INPUT;
   }
-  isFormCheckBox(data) {
+  isFormCheckbox(data) {
     return data === this.types.CHECKBOX;
   }
   isFormDate(data) {

@@ -1,12 +1,36 @@
-<div style="max-height: 400px;overflow:auto;">
-<table mat-table
-       [dataSource]="data.data" class="mat-elevation-z8" matSort >
-  <ng-container matColumnDef="{{column}}" *ngFor="let column of data.header">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header > {{column}} </th>
-    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="data.header"></tr>
-  <tr mat-row *matRowDef="let element; columns: data.header;"></tr>
-</table>
-<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+<div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="14px">
+  <label class="custom-label-form">{{ data.label }}</label>
+  <div style="max-height: 400px; overflow: auto;" class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container
+        matColumnDef="{{ column.key }}"
+        *ngFor="let column of data.header"
+      >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ column.title }}
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element[column.key] }}</td>
+      </ng-container>
+      <ng-container
+        matColumnDef="{{ column }}"
+        *ngFor="let column of headersFilter"
+      >
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field class="form-column-filter">
+            <mat-label>Cari</mat-label>
+            <mat-icon matPrefix>search</mat-icon>
+            <input
+              matInput
+              (keyup)="applyFilter($event, column)"
+              placeholder="Cari: ..."
+            />
+          </mat-form-field>
+        </th>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="headers; sticky: true"></tr>
+      <tr mat-header-row *matHeaderRowDef="headersFilter; sticky: true"></tr>
+      <tr mat-row *matRowDef="let element; columns: headers"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
 </div>

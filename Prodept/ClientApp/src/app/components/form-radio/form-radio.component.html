@@ -1,1 +1,20 @@
-<p>form-radio works!</p>
+<div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8px">
+  <label class="custom-label-form">{{ data.label }}</label>
+  <mat-radio-group
+    [name]="data.name"
+    [disabled]="data.disabled"
+    [value]="data.initialValue"
+    color="primary"
+    fxLayout="column"
+    fxLayoutAlign="start start"
+    fxLayoutGap="4px"
+  >
+    <mat-radio-button
+      *ngFor="let item of data.data"
+      [value]="item.data"
+      [disabled]="item.disabled"
+    >
+      {{ item.label }}
+    </mat-radio-button>
+  </mat-radio-group>
+</div>

@@ -1,1 +1,17 @@
-<p>form-select works!</p>
+<label class="custom-label-form">{{ data.label }}</label>
+<mat-form-field appearance="legacy">
+  <!-- <mat-label class="mat-h3">{{ data.label }}</mat-label> -->
+  <mat-select
+    (selectionChange)="changeValue($event)"
+    [disabled]="data.disabled"
+    [value]="data.initialValue"
+  >
+    <mat-option
+      *ngFor="let item of data.data"
+      [value]="item.data"
+      [disabled]="item.disabled"
+    >
+      {{ item.label }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

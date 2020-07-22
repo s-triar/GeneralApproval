@@ -1,4 +1,12 @@
+<label class="custom-label-form">{{ data.label }}</label>
 <mat-form-field appearance="legacy" fxFlexFill>
-    <mat-label>{{data.label}}</mat-label>
-    <input matInput [readonly]="data.disabled" [value]="data.data" [type]="type" [name]="data.name" (change)="change($event)">
+  <!-- <mat-label class="mat-h3">{{ data.label }}</mat-label> -->
+  <input
+    matInput
+    [readonly]="data.disabled"
+    [value]="data.data"
+    [type]="type"
+    [name]="data.name"
+    (change)="change($event)"
+  />
 </mat-form-field>
