@@ -1,11 +1,18 @@
 export class User {
   nik: string;
-  name: string;
+  nama: string;
   email: string;
-  phone: string;
-  token: string;
-  photoUrl: string;
-  public constructor(init?: Partial<User>) {
-    Object.assign(this, init);
-  }
+  ext: string;
+  atasanNik: string;
+  atasan: string;
+  subDepartemenKode: string;
+  subDepartemen: string;
+  departemenKode: string;
+  departemen: string;
+  direktoratKode: string;
+  direktorat: string;
+  cabangKode: string;
+  cabang: string;
+  unitKode: string;
+  unit: string;
 }

@@ -31,9 +31,9 @@ export class AuthService {
 
     const u = this._tokenService.getUserInfo();
     if (u) {
-      const username = u['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'];
-      this._userService.getUserDetail(username).subscribe(
-        x => this.user.next(x)
+      // const username = u['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'];
+      this._userService.getUserDetail().subscribe(
+        x => this.user.next(x.data)
       );
       const rolesData = u['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
       this.user_roles.next(rolesData);

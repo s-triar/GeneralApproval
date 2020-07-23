@@ -7,6 +7,8 @@ import { MainNavComponent } from './main-nav/main-nav.component';
 import { ListComponent } from './pages/list/list.component';
 import { DetailComponent } from './pages/detail/detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { GuestGuard } from './guards/guest.guard';
+import { LoggedGuard } from './guards/logged.guard';
 
 const routes: Routes = [
   {
@@ -14,13 +16,13 @@ const routes: Routes = [
     component: MainNavComponent,
     children: [
       { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard', component: DashboardComponent, canActivate: [LoggedGuard] },
 
-      { path: 'login', component: LoginComponent },
-      // { path: 'register', component: RegisterComponent },
-      { path: 'forget-password', component: ForgetPasswordComponent },
-      { path: 'list', component: ListComponent },
-      { path: 'detail', component: DetailComponent },
+      { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
+      // { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
+      { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [GuestGuard] },
+      { path: 'list', component: ListComponent, canActivate: [LoggedGuard] },
+      { path: 'detail', component: DetailComponent, canActivate: [LoggedGuard] },
     ],
   },
 ];

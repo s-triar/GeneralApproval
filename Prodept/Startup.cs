@@ -20,6 +20,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Prodept.Commons.Interfaces;
 using Prodept.Commons.Services;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Prodept
 {
@@ -95,7 +97,10 @@ namespace Prodept
             //        policy.RequireClaim(ClaimTypes.Role, "general_approval:tolak-permintaan");
             //    });
             //});
-
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the Angular files will be served from this directory
@@ -103,9 +108,9 @@ namespace Prodept
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-            services.AddSingleton<IUserDeviceService, UserDeviceService>();
-            services.AddSingleton<IProjectRequestService, ProjectRequestService>();
-            services.AddSingleton<INotificationService, NotificationService>();
+            services.AddScoped<IUserDeviceService, UserDeviceService>();
+            services.AddScoped<IProjectRequestService, ProjectRequestService>();
+            services.AddScoped<INotificationService, NotificationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -18,14 +18,6 @@ import { MatSidenav } from '@angular/material/sidenav';
   styleUrls: ['./main-nav.component.scss'],
 })
 export class MainNavComponent implements OnInit, OnDestroy {
-  user: User = {
-    nik: '2015169765',
-    email: 'sulaimantriarjo@indomaret.co.id',
-    name: 'Sulaiman Triarjo',
-    phone: '085755519123',
-    photoUrl: 'assets/defaults/user-default.png',
-    token: '',
-  };
   projectList = ['projek a', 'projek b', 'projek c'];
   items: number[] = [];
   showMenuMaster = false;
@@ -34,12 +26,12 @@ export class MainNavComponent implements OnInit, OnDestroy {
   user$: Observable<User>;
   @ViewChild('drawer', {static: true}) leftsidenav: MatSidenav;
   isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Web)
+    .observe(Breakpoints.Handset)
     .pipe(
       map((result) => result.matches),
       shareReplay()
     );
-  width: number;
+  // width: number;
   constructor(
     private cdr: ChangeDetectorRef,
     private breakpointObserver: BreakpointObserver,
@@ -58,10 +50,10 @@ export class MainNavComponent implements OnInit, OnDestroy {
       this.items.push(index);
     }
   }
-  setWidth(widthNumber: number) {
-    this.width = widthNumber;
-    this.cdr.detectChanges();
-  }
+  // setWidth(widthNumber: number) {
+  //   this.width = widthNumber;
+  //   this.cdr.detectChanges();
+  // }
   ToggleTheme() {
     this._themeService.ToggleTheme(this._renderer);
   }
@@ -89,4 +81,7 @@ export class MainNavComponent implements OnInit, OnDestroy {
   toggleMenuMaster() {
     this.showMenuMaster = !this.showMenuMaster;
   }
+
+
+
 }

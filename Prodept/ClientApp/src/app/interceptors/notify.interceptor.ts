@@ -29,7 +29,6 @@ export class NotifyInterceptor implements HttpInterceptor {
                 this._notifService.showSnack(context);
               }
             } catch (error) {
-
             }
           }
 

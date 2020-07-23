@@ -3,22 +3,20 @@
     #drawer
     class="sidenav"
     fixedInViewport
-    [attr.role]="(isHandset$ | async) ? 'navigation' : 'dialog'"
-    [mode]="(isHandset$ | async) ? 'side' : 'over'"
+    [attr.role]="(isHandset$ | async) ?  'dialog':'navigation' "
+    [mode]="(isHandset$ | async) ?  'over':'side'"
     [opened]="isHandset$ | async"
-    appOpenSidebarOnSwipe
-    [ngStyle]="{ width: width + 'px' }"
-    [sideNav]="drawer"
-    (setWidth)="setWidth($event)"
+    
   >
     <div
       class="simple-profile"
       fxLayout="column"
       fxLayoutAlign="start start"
       fxLayoutGap="2px"
+      *ngIf="(user$ | async).nik != null"
     >
-      <div class="mat-h2">{{ user.name }}</div>
-      <div class="mat-caption">{{ user.nik }}</div>
+      <div class="mat-h2">{{ (user$|async).nama }}</div>
+      <div class="mat-caption">{{ (user$|async).nik }}</div>
     </div>
     <mat-nav-list>
       <a
@@ -76,6 +74,7 @@
         type="button"
         aria-label="Toggle sidenav"
         mat-icon-button
+        *ngIf="(user$ | async).nik != null"
         (click)="drawer.toggle()"
         fxFlex="none"
       >
@@ -93,11 +92,21 @@
         color="accent"
         type="button"
         mat-icon-button
+        
         (click)="ToggleTheme()"
       >
         <mat-icon>{{
           (theme$ | async).IsDefault ? "wb_sunny" : "brightness_2"
         }}</mat-icon>
+      </button>
+      <button
+        color="warn"
+        type="button"
+        mat-mini-fab
+        (click)="logout()"
+        *ngIf="(user$ | async).nik != null"
+      >
+        <mat-icon>settings_power</mat-icon>
       </button>
     </mat-toolbar>
     <router-outlet></router-outlet>

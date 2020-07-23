@@ -27,6 +27,11 @@ namespace Prodept.Controllers
             _projectReqservice = projectReqservice;
         }
 
+        //Todo Get List Projects of user
+        //Todo Get List Request of project
+        //Todo Get Detail of Request
+
+
         //Todo request for additional data e.g for list, option.
         //Todo request for downloading file
         //Todo request for downloading image
@@ -41,7 +46,7 @@ namespace Prodept.Controllers
             var proj = _httpClientFactory.CreateClient();
             proj.SetBearerToken(token);
             var resproj = await proj.PostAsJsonAsync(Dec.Link, Dec);
-            if(resproj.StatusCode == HttpStatusCode.OK)
+            if(resproj.IsSuccessStatusCode)
             {
                 //Todo hapus data
                 var data = new RequestList

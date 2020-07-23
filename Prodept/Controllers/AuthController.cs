@@ -91,18 +91,25 @@ namespace Prodept.Controllers
             var nik = k.Value;
             var author = HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
             var rawtok = author.Value.FirstOrDefault(x => x.ToLower().Contains("bearer")).Split("Bearer ");
-            string token = rawtok[rawtok.Length - 1];
+            string Token = rawtok[rawtok.Length - 1];
+
             var server = _httpClientFactory.CreateClient();
-            server.SetBearerToken(token);
-            var resproj = await server.GetAsync(_config.GetSection("CentralAuth").Value+ "GetDetail?Kode="+ nik);
-            if (resproj.StatusCode == HttpStatusCode.OK)
+            server.SetBearerToken(Token);
+            var link = _config.GetSection("CentralAuth").Value + "api/User/GetDetailUser?Kode=" + nik;
+            var request = new HttpRequestMessage(HttpMethod.Get, link);
+            server.SetBearerToken(Token);
+            var resproj = await server.SendAsync(request);
+            if (resproj.IsSuccessStatusCode)
             {
+                //var responseStream = await resproj.Content.ReadAsAsync(Type.);
+                //var user = JsonConvert.SerializeObject(responseStream);
+                //var userDes = JsonConvert.DeserializeObject<User>(user);
                 var res = new CustomResponse()
                 {
-                    message = "Data sudah dilakukan approval",
-                    title = "Approval Sukses",
+                    message = "Berhasil mendapatkan data pengguna",
+                    title = "Sukses",
                     ok = true,
-                    data = JsonConvert.SerializeObject(resproj.Content)
+                    data = await resproj.Content.ReadAsAsync<User>()
                 };
                 return Ok(res);
             }
@@ -111,8 +118,8 @@ namespace Prodept.Controllers
                 var res = new CustomResponse()
                 {
                     data = JsonConvert.SerializeObject(resproj.Content),
-                    message = "Gagal dilakukan approval. Error Code: " + resproj.StatusCode,
-                    title = "Approval ke Project Gagal",
+                    message = "Gagal mendapatkan data pengguna. Error Code: " + resproj.StatusCode,
+                    title = "Gagal",
                     ok = false
                 };
                 return BadRequest(res);

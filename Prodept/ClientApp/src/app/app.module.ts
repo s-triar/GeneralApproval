@@ -41,6 +41,7 @@ import { DialogLoadingComponent } from './components/dialog-loading/dialog-loadi
 import { ApprovalConfirmationComponent } from './components/approval-confirmation/approval-confirmation.component';
 import { ApprovalWarningComponent } from './components/approval-warning/approval-warning.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { interceptorProviders } from './interceptors';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
       enabled: environment.production,
     }),
   ],
-  providers: [],
+  providers: [...interceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
