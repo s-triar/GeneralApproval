@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Prodept.Commons;
 using Prodept.Commons.Interfaces;
 using Prodept.Commons.Models;
 using Prodept.Commons.Models.Authentication;
@@ -35,16 +36,21 @@ namespace Prodept.Controllers
 
         //Todo Login
         [HttpPost("[action]")]
-        public async Task<IActionResult> Login(UserLogin user)
+        public async Task<IActionResult> Login([FromBody] UserLogin user)
         {
-            var server = _httpClientFactory.CreateClient();
+            //HttpClientHandler clientHandler = new HttpClientHandler();
+            //clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+            //// Pass the handler to httpclient(from you are calling api)
+            //HttpClient client = new HttpClient(clientHandler);
+            var server = _httpClientFactory.CreateClient(AppEnum.AuthCentralHttp);
             var discoveryDoc = await server.GetDiscoveryDocumentAsync(this._config.GetSection("CentralAuth").Value);
             var tokenRes = await server.RequestPasswordTokenAsync(
                 new PasswordTokenRequest
                 {
                     Password = user.Password,
                     UserName = user.Nik,
-                    Address = discoveryDoc.TokenEndpoint,
+                    Address = this._config.GetSection("CentralAuth").Value + "connect/token",
                     ClientId = this._config.GetSection("IdentityServerAccount").GetSection("ClientId").Value,
                     ClientSecret = this._config.GetSection("IdentityServerAccount").GetSection("ClientSecret").Value,
                     GrantType = GrantType.ResourceOwnerPassword,
@@ -86,44 +92,60 @@ namespace Prodept.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetUserProfile()
         {
-            var s = HttpContext.User.Claims;
-            var k = s.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
-            var nik = k.Value;
-            var author = HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
-            var rawtok = author.Value.FirstOrDefault(x => x.ToLower().Contains("bearer")).Split("Bearer ");
-            string Token = rawtok[rawtok.Length - 1];
+            return Ok(new { aa= "fawfafafaf"});
+            try
+            {
+                var s = HttpContext.User.Claims;
+                var k = s.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+                var nik = k.Value;
+                var author = HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
+                var rawtok = author.Value.FirstOrDefault(x => x.ToLower().Contains("bearer")).Split("Bearer ");
+                string Token = rawtok[rawtok.Length - 1];
 
-            var server = _httpClientFactory.CreateClient();
-            server.SetBearerToken(Token);
-            var link = _config.GetSection("CentralAuth").Value + "api/User/GetDetailUser?Kode=" + nik;
-            var request = new HttpRequestMessage(HttpMethod.Get, link);
-            server.SetBearerToken(Token);
-            var resproj = await server.SendAsync(request);
-            if (resproj.IsSuccessStatusCode)
-            {
-                //var responseStream = await resproj.Content.ReadAsAsync(Type.);
-                //var user = JsonConvert.SerializeObject(responseStream);
-                //var userDes = JsonConvert.DeserializeObject<User>(user);
-                var res = new CustomResponse()
+                var server = _httpClientFactory.CreateClient(AppEnum.AuthCentralHttp);
+                server.SetBearerToken(Token);
+                var link = _config.GetSection("CentralAuth").Value + "api/User/GetDetailUser?Kode=" + nik;
+                var request = new HttpRequestMessage(HttpMethod.Get, link);
+                server.SetBearerToken(Token);
+                var resproj = await server.SendAsync(request);
+                if (resproj.IsSuccessStatusCode)
                 {
-                    message = "Berhasil mendapatkan data pengguna",
-                    title = "Sukses",
-                    ok = true,
-                    data = await resproj.Content.ReadAsAsync<User>()
-                };
-                return Ok(res);
+                    //var responseStream = await resproj.Content.ReadAsAsync(Type.);
+                    //var user = JsonConvert.SerializeObject(responseStream);
+                    //var userDes = JsonConvert.DeserializeObject<User>(user);
+                    var res = new CustomResponse()
+                    {
+                        message = "Berhasil mendapatkan data pengguna",
+                        title = "Sukses",
+                        ok = true,
+                        data = await resproj.Content.ReadAsAsync<User>()
+                    };
+                    return Ok(res);
+                }
+                else
+                {
+                    var res = new CustomResponse()
+                    {
+                        data = JsonConvert.SerializeObject(resproj.Content),
+                        message = "Gagal mendapatkan data pengguna. Error Code: " + resproj.StatusCode,
+                        title = "Gagal",
+                        ok = false
+                    };
+                    return BadRequest(res);
+                }
             }
-            else
+            catch(Exception ex)
             {
                 var res = new CustomResponse()
                 {
-                    data = JsonConvert.SerializeObject(resproj.Content),
-                    message = "Gagal mendapatkan data pengguna. Error Code: " + resproj.StatusCode,
+                    data = ex.Data,
+                    message = ex.Message,
                     title = "Gagal",
                     ok = false
                 };
                 return BadRequest(res);
             }
+            
         }
 
 

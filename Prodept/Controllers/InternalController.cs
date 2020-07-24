@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,17 +29,55 @@ namespace Prodept.Controllers
         }
 
         //Todo Get List Projects of user
+        [Authorize]
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<ListProject>> GetListProject([FromQuery] string name)
+        {
+            if (name.IsNullOrEmpty())
+            {
+                name = "";
+            }
+            var s = HttpContext.User.Claims;
+            var k = s.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+            var nik = k.Value;
+            return this._projectReqservice.GetListProject(nik, name.ToLower());
+        }
+
         //Todo Get List Request of project
+        [Authorize]
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<RequestList>> GetListRequestProject([FromQuery] string name)
+        {
+            var s = HttpContext.User.Claims;
+            var k = s.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+            var nik = k.Value;
+            return this._projectReqservice.GetListRequest(nik, name);
+        }
+
         //Todo Get Detail of Request
+        [Authorize]
+        [HttpGet("[action]")]
+        public async Task<RequestList> GetDetailRequestProject([FromQuery] RequestList data)
+        {
+            var s = HttpContext.User.Claims;
+            var k = s.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+            var nik = k.Value;
+            data.Nik = nik;
+            return this._projectReqservice.GetSpecificId(data);
+        }
 
 
         //Todo request for additional data e.g for list, option.
+
         //Todo request for downloading file
+
         //Todo request for downloading image
+
+
         //Todo request for sending approval
         [Authorize]
         [HttpPost("[action]")]
-        public async Task<IActionResult> SendDecision(Decision Dec)
+        public async Task<IActionResult> SendDecision([FromBody] Decision Dec)
         {
             var author = HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
             var rawtok = author.Value.FirstOrDefault(x=>x.ToLower().Contains("bearer")).Split("Bearer ");

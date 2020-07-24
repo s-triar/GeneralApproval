@@ -22,6 +22,10 @@ using Prodept.Commons.Interfaces;
 using Prodept.Commons.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.Net;
+using System.Net.Http;
+using Prodept.Commons;
 
 namespace Prodept
 {
@@ -37,6 +41,8 @@ namespace Prodept
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+
             services.AddDbContext<AppDbContext>(config =>
             {
                 config.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
@@ -68,7 +74,6 @@ namespace Prodept
                       ValidateAudience = false
                   };
               });
-            services.AddHttpClient();
 
             //services.AddAuthorization(options =>
             //{
@@ -97,10 +102,11 @@ namespace Prodept
             //        policy.RequireClaim(ClaimTypes.Role, "general_approval:tolak-permintaan");
             //    });
             //});
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            services.AddResponseCompression(c =>
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
+                c.EnableForHttps = true;
+                c.Providers.Add<GzipCompressionProvider>();
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the Angular files will be served from this directory
@@ -108,6 +114,22 @@ namespace Prodept
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            //Bypass untrusted certificate
+            services.AddHttpClient(AppEnum.AuthCentralHttp).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                ClientCertificateOptions = ClientCertificateOption.Manual,
+                ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) =>
+                {
+                    return true;
+                }
+            });
+            //services.AddHttpClient();
+            services.AddHttpContextAccessor();
             services.AddScoped<IUserDeviceService, UserDeviceService>();
             services.AddScoped<IProjectRequestService, ProjectRequestService>();
             services.AddScoped<INotificationService, NotificationService>();
@@ -127,14 +149,20 @@ namespace Prodept
                 app.UseHsts();
             }
 
-
+            app.UseResponseCompression();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             //app.UseIdentityServer();
             app.UseAuthentication();
-            
+            //app.UseCors(builder =>
+            //{
+            //    builder.WithOrigins(Configuration.GetSection("Originku").Value)
+            //           .AllowCredentials()
+            //           .AllowAnyMethod()
+            //           .AllowAnyHeader();
+            //});
 
             app.UseMvc(routes =>
             {
@@ -144,6 +172,7 @@ namespace Prodept
             }
             );
            
+
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,

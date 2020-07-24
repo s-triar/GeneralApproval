@@ -5,7 +5,7 @@
     fixedInViewport
     [attr.role]="(isHandset$ | async) ?  'dialog':'navigation' "
     [mode]="(isHandset$ | async) ?  'over':'side'"
-    [opened]="isHandset$ | async"
+    [opened]="(isHandset$ | async) && (user$ | async).nik != null"
     
   >
     <div
@@ -26,25 +26,20 @@
         ><span>Dashboard</span></a
       >
     </mat-nav-list>
-    <div
-      class="pencarian-projek"
-      fxLayout="row"
-      fxLayoutAlign="space-around center"
-      fxLayoutGap="5px"
-    >
-      <mat-form-field appearance="fill">
+
+      <mat-form-field appearance="fill" style="width: 100%;">
         <mat-label>Cari Projek</mat-label>
-        <input matInput type="text" [matAutocomplete]="auto" />
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of projectList" [value]="option">
-            {{ option }}
-          </mat-option>
-        </mat-autocomplete>
+        <input matInput type="text" #searchbar/>
+        <button
+            mat-icon-button
+            matSuffix
+            [disabled]="isSearching"
+            (click)="clearSearchBar()"
+          >
+            <mat-icon>{{isSearching ?'hourglass_bottom' : 'close'}}</mat-icon>
+        </button>
+       
       </mat-form-field>
-      <button mat-mini-fab>
-        <mat-icon>search</mat-icon>
-      </button>
-    </div>
     <div class="daftar-projek">
       <mat-nav-list>
         <a
@@ -53,11 +48,12 @@
           *ngFor="let item of items; index as i"
         >
           <h4 matLine style="padding-top: 10px;">
-            <span matBadge="4" matBadgeColor="accent" matBadgeOverlap="false"
-              >Link {{ i }}</span
+            <span [matBadge]="item.n" matBadgeColor="accent" matBadgeOverlap="false"
+              >{{item.projectName}}</span
             >
+            
           </h4>
-          <p matLine class="mat-caption">http://192.168.2.49/assemblyjurnal</p>
+          <p matLine class="mat-caption">{{item.url}}</p>
         </a>
       </mat-nav-list>
     </div>

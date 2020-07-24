@@ -62,9 +62,9 @@ namespace Prodept.Commons.Services
         {
             return this._context.RequestLists.Where(x => x.ApiName == entity.ApiName && x.Nik == entity.Nik).AsEnumerable();
         }
-        public IEnumerable<RequestList> GetListRequest(RequestList entity)
+        public IEnumerable<RequestList> GetListRequest(string Nik, string ApiName)
         {
-            return this._context.RequestLists.Where(x => x.ApiName == entity.ApiName && x.Nik == entity.Nik)
+            return this._context.RequestLists.Where(x => x.ApiName == ApiName && x.Nik == Nik)
                                 .Select(x=> new RequestList { 
                                     ApiName = x.ApiName,
                                     Category = x.Category,
@@ -83,7 +83,7 @@ namespace Prodept.Commons.Services
         {
             return  this._context.RequestLists
                                 .Where(x =>x.Nik == Nik)
-                                .Where(x => x.ProjectName.Contains(ProjectName))
+                                .Where(x => x.ProjectName.ToLower().Contains(ProjectName))
                                 .GroupBy(x=> new {
                                     Nik = x.Nik,
                                     ApiN = x.ApiName,

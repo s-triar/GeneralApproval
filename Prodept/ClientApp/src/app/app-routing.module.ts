@@ -21,8 +21,8 @@ const routes: Routes = [
       { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
       // { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
       { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [GuestGuard] },
-      { path: 'list', component: ListComponent, canActivate: [LoggedGuard] },
-      { path: 'detail', component: DetailComponent, canActivate: [LoggedGuard] },
+      { path: ':apiname/list', component: ListComponent, canActivate: [LoggedGuard] },
+      { path: ':apiname/detail/:id', component: DetailComponent, canActivate: [LoggedGuard] },
     ],
   },
 ];

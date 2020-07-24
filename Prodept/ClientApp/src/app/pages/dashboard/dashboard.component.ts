@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { SwUpdate, SwPush } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/services/auth.service';
+import { NotifService } from 'src/app/services/notif.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,27 +13,34 @@ import { environment } from 'src/environments/environment';
 export class DashboardComponent implements OnInit {
 
   constructor(
-    private _httpClient: HttpClient,
     private _swUp: SwUpdate,
-    private _swPush: SwPush
+    private _swPush: SwPush,
+    private _authService: AuthService,
+    private _notifService: NotifService,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
-    // this.pushSubscription();
+    this.AddSubscription();
   }
   GetNotif() {
-    console.log('fafawfa');
-    this._httpClient.get('https://localhost:44389/api/Notification/Send');
+    this._notifService.Try();
   }
-  ShowSubscription() {
+  AddSubscription() {
     if (!this._swPush.isEnabled) {
-      console.log('Notification is disabled');
+      this._snackBar.open('Notification Dimatikan!', null, {
+        duration: 2000,
+      });
       return;
     }
     this._swPush.requestSubscription({
       serverPublicKey: environment.webPush.publicKey
     })
-    .then(sub => console.log(JSON.stringify(sub)))
+    .then(sub => {
+      const key = JSON.stringify(sub);
+      const nik = this._authService.user.getValue().nik;
+      this._notifService.AddSubscription(key, nik);
+     })
     .catch(err => console.log(err))
     ;
   }

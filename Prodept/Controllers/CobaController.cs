@@ -26,6 +26,11 @@ namespace Prodept.Controllers
             _httpClientFactory = httpClientFactory;
         }
         [HttpGet("[action]")]
+        public async Task<IActionResult> T()
+        {
+            return Ok(new { message= "sukses awragwa"});
+        }
+        [HttpGet("[action]")]
         public async Task<IActionResult> Test()
         {
             var server = _httpClientFactory.CreateClient();

@@ -7,7 +7,7 @@ namespace Prodept.Commons.Models
 {
     public class UserDeviceVM
     {
-        public string key { get; set; }
-        public string nik { get; set; }
+        public string Key { get; set; }
+        public string Nik { get; set; }
     }
 }

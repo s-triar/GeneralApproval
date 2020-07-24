@@ -20,11 +20,11 @@ export class AuthService {
   }
 
   login(payload: Login): Observable<any> {
-    return this._http.post<any>('api/Auth/login', payload);
+    return this._http.post<any>('api/Auth/Login', payload);
   }
 
   logout(): Observable<any> {
-    return this._http.post('api/Auth/logout', {});
+    return this._http.post('api/Auth/Logout', {});
   }
 
   setLoggedUser() {

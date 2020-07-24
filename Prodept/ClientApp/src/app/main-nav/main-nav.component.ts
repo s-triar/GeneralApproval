@@ -1,7 +1,7 @@
-import { Component, OnInit, Renderer2, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Renderer2, OnDestroy, ViewChild, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable, Subscription } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Observable, Subscription, Subject, fromEvent } from 'rxjs';
+import { map, shareReplay, debounceTime, filter, distinctUntilChanged } from 'rxjs/operators';
 import { User } from '../models/user';
 import { Theme } from '../models/theme';
 import { ThemeService } from '../services/theme.service';
@@ -11,6 +11,9 @@ import { TokenService } from '../services/token.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatInput } from '@angular/material/input';
+import { ProjectService } from '../services/project.service';
+import { ProjectList } from '../models/project-list';
 
 @Component({
   selector: 'app-main-nav',
@@ -18,20 +21,19 @@ import { MatSidenav } from '@angular/material/sidenav';
   styleUrls: ['./main-nav.component.scss'],
 })
 export class MainNavComponent implements OnInit, OnDestroy {
-  projectList = ['projek a', 'projek b', 'projek c'];
-  items: number[] = [];
+  items: ProjectList[] = [];
+  isSearching = false;
   showMenuMaster = false;
   theme$: Observable<Theme>;
-  formSubscription: Subscription;
   user$: Observable<User>;
   @ViewChild('drawer', {static: true}) leftsidenav: MatSidenav;
+  @ViewChild('searchbar', {static: true}) searchbar: ElementRef;
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
       map((result) => result.matches),
       shareReplay()
     );
-  // width: number;
   constructor(
     private cdr: ChangeDetectorRef,
     private breakpointObserver: BreakpointObserver,
@@ -39,38 +41,49 @@ export class MainNavComponent implements OnInit, OnDestroy {
     private _themeService: ThemeService,
     private _authService: AuthService,
     private _tokenService: TokenService,
-    private _router: Router
+    private _router: Router,
+    private _projectService: ProjectService
   ) {}
   ngOnDestroy(): void {}
 
   ngOnInit() {
     this.theme$ = this._themeService.currentTheme$;
     this.user$ = this._authService.user$;
-    for (let index = 0; index < 100; index++) {
-      this.items.push(index);
-    }
+    this.fetchProject();
+    fromEvent(this.searchbar.nativeElement, 'keyup').pipe(
+      map((event: any) => {
+        return event.target.value;
+      }),
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe((text: string) => {
+      this.isSearching = true;
+      this._projectService.getListProject(text).subscribe(
+        res => {
+          this.isSearching = false;
+          this.items = res;
+        },
+        err => {
+          this.isSearching = false;
+        }
+      );
+    });
   }
-  // setWidth(widthNumber: number) {
-  //   this.width = widthNumber;
-  //   this.cdr.detectChanges();
-  // }
   ToggleTheme() {
     this._themeService.ToggleTheme(this._renderer);
   }
 
   logout() {
-    this.formSubscription = this._authService
+    this._authService
                                 .logout()
                                 .subscribe(
                                   (x: CustomResponse<any>) => {
                                     this.leftsidenav.close();
                                     this._tokenService.removeToken();
                                     this._authService.setLoggedUser();
-                                    this.formSubscription.unsubscribe();
                                     this._router.navigate(['/login'], {replaceUrl: true});
                                   },
                                   (err: HttpErrorResponse) => {
-                                    this.formSubscription.unsubscribe();
                                   },
                                   () => {
                                     console.log('Form Logout Observer got a complete notification');
@@ -81,6 +94,21 @@ export class MainNavComponent implements OnInit, OnDestroy {
   toggleMenuMaster() {
     this.showMenuMaster = !this.showMenuMaster;
   }
+
+  clearSearchBar() {
+    this.searchbar.nativeElement.value = '';
+  }
+
+  fetchProject() {
+    let val = this.searchbar.nativeElement.value;
+    if (val === null) {
+      val = '';
+    }
+    this._projectService.getListProject(val).subscribe(
+      res => this.items = res
+    );
+  }
+
 
 
 

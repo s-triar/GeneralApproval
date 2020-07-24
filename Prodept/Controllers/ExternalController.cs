@@ -25,7 +25,7 @@ namespace Prodept.Controllers
         
         [Authorize]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add(RequestList data)
+        public async Task<IActionResult> Add([FromBody] RequestList data)
         {
             int r = -2;
             var trans = this._projectReqservice.GetTransaction();
@@ -96,7 +96,7 @@ namespace Prodept.Controllers
 
         [Authorize]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Remove(RequestList data)
+        public async Task<IActionResult> Remove([FromBody] RequestList data)
         {
             this._projectReqservice.Remove(data);
             int i = this._projectReqservice.save();

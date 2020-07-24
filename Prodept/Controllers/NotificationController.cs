@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prodept.Commons.Interfaces;
@@ -20,20 +21,21 @@ namespace Prodept.Controllers
         {
             this.notif = notif;
         }
-
+        [Authorize]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add(UserDeviceVM ClientBrowser)
+        public async Task<IActionResult> Add([FromBody] UserDeviceVM ClientBrowser)
         {
             try
             {
                 var ret = new CustomResponse();
-                var res = this.notif.add(ClientBrowser.key, ClientBrowser.nik);
+                var res = this.notif.add(ClientBrowser.Key, ClientBrowser.Nik);
                 if(res > 0)
                 {
                     ret.message = "";
                     ret.ok = true;
                     ret.data = null;
                     ret.title = "Pendaftaran Browser Key Sukses";
+                    this.notif.sendNotif(ClientBrowser.Nik, "General Approval", "Terima kasih telah subscribe");
                     return Ok(ret);
                 }
                 else
@@ -57,6 +59,16 @@ namespace Prodept.Controllers
             }
             
             
+        }
+
+        [Authorize]
+        [HttpGet("[action]")]
+        public void Try()
+        {
+            var s = HttpContext.User.Claims;
+            var k = s.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+            var nik = k.Value;
+            this.notif.sendNotif(nik, "General Approval", "Coba kirim pesan\nKepadamu");
         }
     }
 }

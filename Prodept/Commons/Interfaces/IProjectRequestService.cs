@@ -18,7 +18,7 @@ namespace Prodept.Commons.Interfaces
         IEnumerable<RequestList> GetSpecificUser(RequestList entity);
         IEnumerable<RequestList> GetSpecificProject(RequestList entity);
         IEnumerable<RequestList> GetSpecificUserAndProject(RequestList entity);
-        IEnumerable<RequestList> GetListRequest(RequestList entity);
+        IEnumerable<RequestList> GetListRequest(string Nik, string ApiName);
         IEnumerable<ListProject> GetListProject(string Nik, string ProjectName);
     }
 }
