@@ -82,7 +82,7 @@ namespace Prodept.Controllers
             var author = HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
             var rawtok = author.Value.FirstOrDefault(x=>x.ToLower().Contains("bearer")).Split("Bearer ");
             string token = rawtok[rawtok.Length - 1];
-            var proj = _httpClientFactory.CreateClient();
+            var proj = _httpClientFactory.CreateClient("bebas");
             proj.SetBearerToken(token);
             var resproj = await proj.PostAsJsonAsync(Dec.Link, Dec);
             if(resproj.IsSuccessStatusCode)

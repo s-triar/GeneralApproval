@@ -42,6 +42,23 @@ import { ApprovalConfirmationComponent } from './components/approval-confirmatio
 import { ApprovalWarningComponent } from './components/approval-warning/approval-warning.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { interceptorProviders } from './interceptors';
+import { FormGroupComponent } from './components/form-group/form-group.component';
+import { WarningRequiredComponent } from './components/warning-required/warning-required.component';
+import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @NgModule({
   declarations: [
@@ -75,6 +92,8 @@ import { interceptorProviders } from './interceptors';
     DashboardComponent,
     ApprovalConfirmationComponent,
     ApprovalWarningComponent,
+    FormGroupComponent,
+    WarningRequiredComponent,
   ],
   entryComponents: [
     SnackbarNotifComponent,
@@ -92,8 +111,10 @@ import { interceptorProviders } from './interceptors';
     FormRadioComponent,
     FormDateComponent,
     FormFileComponent,
+    FormGroupComponent,
     ApprovalConfirmationComponent,
     ApprovalWarningComponent,
+    WarningRequiredComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -109,7 +130,14 @@ import { interceptorProviders } from './interceptors';
       enabled: environment.production,
     }),
   ],
-  providers: [...interceptorProviders],
+  providers: [...interceptorProviders,
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -6,6 +6,7 @@ export class RequestList {
     urlProject: string;
     category: string;
     title: string;
+    subTitle: string;
     status: string;
     detail: string;
     urlAction: string;

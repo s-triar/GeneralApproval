@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { RequestList } from '../models/request-list';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +18,11 @@ export class ProjectService {
     return this._http.get(`api/Internal/GetListProject`, {headers: header, params: {name: payload }} );
   }
 
-  getListRequestProject(payload: string): Observable<any> {
+  getListRequestProject(payload: string): Observable<RequestList[]> {
     let header: HttpHeaders = new HttpHeaders();
     header = header.set('reqnoloadingdialog', 'true');
     // const tokenRaw = this._tokenService.getToken();
-    return this._http.get(`api/Internal/GetListRequestProject`, {headers: header, params: {name: payload }} );
+    return this._http.get<RequestList[]>(`api/Internal/GetListRequestProject`, {headers: header, params: {name: payload }} );
   }
 
   getDetailRequestProject(payload: string): Observable<any> {

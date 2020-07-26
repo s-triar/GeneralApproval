@@ -30,4 +30,11 @@ export class TokenService {
     const helper = new JwtHelperService();
     return helper.decodeToken(token);
   }
+  getNik() {
+    const u = this.getUserInfo();
+    if (u) {
+      return u['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'];
+    }
+    return null;
+  }
 }

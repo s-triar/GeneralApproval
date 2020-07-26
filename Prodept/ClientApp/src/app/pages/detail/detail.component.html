@@ -1,10 +1,14 @@
 <div class="container" >
     <h1 class="mat-h1">{{data.title}}</h1>
-    <h2 class="mat-h2">{{data.title}}</h2>
+    <h2 class="mat-h2">{{data.subtitle}}</h2>
+    <mat-divider></mat-divider> 
+    <br>
+    <br>
     <app-generator-detail [datas]="data.data"></app-generator-detail>
     <mat-divider style="margin-top: 15px;"></mat-divider>
-    <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="0px" style="padding-bottom:20px; padding-top:40px">
-        <button mat-raised-button color="primary">Approve</button>
-        <button mat-raised-button color="warn">Not Approve</button>
+    <div  fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="0px" style="padding-bottom:20px; padding-top:40px">
+        <button mat-raised-button color="accent" (click)="goToOriginal()">Buka Web</button>
+        <button *ngIf="data.link !== null && data.link !==''" mat-raised-button color="primary" (click)="approve()">Approve</button>
+        <button *ngIf="data.link !== null && data.link !==''" mat-raised-button color="warn" (click)="notApprove()">Not Approve</button>
     </div>
 </div>

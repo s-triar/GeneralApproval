@@ -1,29 +1,26 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { FormInput } from "src/app/models/detail-data";
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { FormInput } from 'src/app/models/detail-data';
+import { ApprovalService } from 'src/app/services/approval.service';
+import { MatInput } from '@angular/material/input';
 
 @Component({
-  selector: "app-form-input",
-  templateUrl: "./form-input.component.html",
-  styleUrls: ["./form-input.component.scss"],
+  selector: 'app-form-input',
+  templateUrl: './form-input.component.html',
+  styleUrls: ['./form-input.component.scss'],
 })
 export class FormInputComponent implements OnInit {
   @Input() data: FormInput;
-  @Output() changeData: EventEmitter<string | number> = new EventEmitter<
-    string | number
-  >();
-  type = "text";
-  constructor() {}
+  constructor(private _approvalService: ApprovalService) {}
 
   ngOnInit(): void {
-    if (typeof this.data.data === "number") {
-      this.type = "number";
-    } else if (typeof this.data.data === "string") {
-      this.type = "text";
+    if (this.data.disabled === false && this.data.data !== null && this.data.data !== 0) {
+      this._approvalService.add(this.data.name, this.data.data);
     }
   }
 
-  change(event) {
-    const d = event.target.value;
-    this.changeData.emit(d);
+  changeInput(event) {
+    const val = event.target.value;
+    const name = this.data.name;
+    this._approvalService.add(name, val);
   }
 }

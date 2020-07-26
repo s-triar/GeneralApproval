@@ -23,6 +23,7 @@ namespace Prodept.Commons.Models
         public string UrlProject { get; set; }
         public string Category { get; set; }
         public string Title { get; set; }
+        public string SubTitle { get; set; }
         public string Status { get; set; }
         public string Detail { get; set; }
         public string UrlAction { get; set; }

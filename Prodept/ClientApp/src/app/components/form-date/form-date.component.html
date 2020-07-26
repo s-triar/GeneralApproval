@@ -11,22 +11,24 @@
         formControlName="start"
         placeholder="Tanggal Mulai"
         [readonly]="data.disabled"
+        (dateChange)="changeDate('start:=', $event)"
       />
       <input
         matEndDate
         formControlName="end"
         placeholder="Tanggal Selesai"
         [readonly]="data.disabled"
+        (dateChange)="changeDate('end:=', $event)"
       />
     </mat-date-range-input>
-    <mat-hint>Bulan-Tanggal-Tahun</mat-hint>
+    <mat-hint>Tanggal/Bulan/Tahun</mat-hint>
     <mat-datepicker-toggle
       matSuffix
       [for]="picker"
       [disabled]="data.disabled"
       mat-mini-fab
     ></mat-datepicker-toggle>
-    <mat-date-range-picker #picker></mat-date-range-picker>
+    <mat-date-range-picker [dateClass]="dateClass" #picker></mat-date-range-picker>
     <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')"
       >Tanggal Mulai Tidak Valid</mat-error
     >
@@ -41,16 +43,19 @@
     <!-- <mat-label class="mat-h3">{{ data.label }}</mat-label> -->
     <input
       matInput
+      [name]="data.name"
       [matDatepicker]="picker"
       [value]="data.data[0]"
       [readonly]="data.disabled"
+      (dateChange)="changeDate('', $event)"
     />
-    <mat-hint>Bulan-Tanggal-Tahun</mat-hint>
+    <mat-hint>Tanggal/Bulan/Tahun</mat-hint>
     <mat-datepicker-toggle
       matSuffix
       [for]="picker"
       [disabled]="data.disabled"
     ></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
+    <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
+    
   </mat-form-field>
 </ng-template>

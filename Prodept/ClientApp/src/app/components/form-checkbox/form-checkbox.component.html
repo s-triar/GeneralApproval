@@ -6,7 +6,8 @@
     [disabled]="item.disabled"
     [checked]="item.checked"
     [value]="item.data"
-    [name]="name"
+    [name]="data.name"
+    (change)="checkStatus($event)"
     >{{ item.label }}</mat-checkbox
   >
 </div>

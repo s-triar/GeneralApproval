@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SwUpdate, SwPush } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
-import { AuthService } from 'src/app/services/auth.service';
 import { NotifService } from 'src/app/services/notif.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TokenService } from 'src/app/services/token.service';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user';
+import { tap } from 'rxjs/operators';
+import { CustomResponse } from 'src/app/models/custom-response';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,19 +16,27 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class DashboardComponent implements OnInit {
 
+  user: User = new User();
   constructor(
     private _swUp: SwUpdate,
     private _swPush: SwPush,
-    private _authService: AuthService,
+    private _tokenService: TokenService,
     private _notifService: NotifService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _userService: UserService
   ) { }
 
   ngOnInit(): void {
     this.AddSubscription();
+    this.GetUser();
   }
+
+  GetUser() {
+    this._userService.getUserDetail().subscribe((x: CustomResponse<User>) => this.user = x.data);
+  }
+
   GetNotif() {
-    this._notifService.Try();
+    this._notifService.Try().subscribe();
   }
   AddSubscription() {
     if (!this._swPush.isEnabled) {
@@ -38,8 +50,11 @@ export class DashboardComponent implements OnInit {
     })
     .then(sub => {
       const key = JSON.stringify(sub);
-      const nik = this._authService.user.getValue().nik;
-      this._notifService.AddSubscription(key, nik);
+      const nik = this._tokenService.getNik();
+      if (nik !== null) {
+        this._notifService.AddSubscription(key, nik).subscribe();
+      }
+
      })
     .catch(err => console.log(err))
     ;

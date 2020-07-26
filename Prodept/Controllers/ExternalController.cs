@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Prodept.Commons;
 using Prodept.Commons.Interfaces;
 using Prodept.Commons.Models;
 
@@ -25,7 +26,7 @@ namespace Prodept.Controllers
         
         [Authorize]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add([FromBody] RequestList data)
+        public async Task<IActionResult> Add([FromBody] RequestListVM data)
         {
             int r = -2;
             var trans = this._projectReqservice.GetTransaction();
@@ -33,14 +34,25 @@ namespace Prodept.Controllers
             {
                 using (trans)
                 {
-                    
-                    var check = this._projectReqservice.GetSpecificId(data);
+                    var temp = new RequestList();
+                    temp.ApiName = data.ApiName;
+                    temp.Nik = data.Nik;
+                    temp.Id = data.Id;
+                    temp.Detail = data.Detail;
+                    temp.ProjectName = data.ProjectName;
+                    temp.Status = data.Status;
+                    temp.SubTitle = data.SubTitle;
+                    temp.Title = data.Title;
+                    temp.UrlAction = data.UrlAction;
+                    temp.UrlProject = data.UrlProject;
+                    var check = this._projectReqservice.GetSpecificId(temp);
                     if (check != null)
                     {
                         check.Category = data.Category;
                         check.Detail = data.Detail;
                         check.Status = data.Status;
                         check.Title = data.Title;
+                        check.SubTitle = data.SubTitle;
                         check.UrlAction = data.UrlAction;
                         check.UrlProject = data.UrlProject;
                         check.ProjectName = data.ProjectName;
@@ -49,7 +61,7 @@ namespace Prodept.Controllers
                     }
                     else
                     {
-                        this._projectReqservice.Add(data);
+                        this._projectReqservice.Add(temp);
                         r = this._projectReqservice.save();
                             
                     }
@@ -62,7 +74,7 @@ namespace Prodept.Controllers
                             ok = true
                         };
                         trans.Commit();
-                        this._notifService.sendNotif(data.Nik, "General Approval X" + data.ProjectName, "Pemberitahuan baru dari " + data.ProjectName + "." + "\n1 Pemberitahuan pada Kategori " + data.Category);
+                        this._notifService.sendNotif(data.Nik, data.DataNotif.Title, data.DataNotif.Message);
                         return Ok(res);
                     }
                     else

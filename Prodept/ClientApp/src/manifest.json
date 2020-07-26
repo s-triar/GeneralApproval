@@ -1,7 +1,7 @@
 {
   "name": "prodept",
   "short_name": "prodept",
-  "theme_color": "#1976d2",
+  "theme_color": "#007ACC",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",

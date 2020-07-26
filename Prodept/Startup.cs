@@ -26,6 +26,11 @@ using Microsoft.AspNetCore.ResponseCompression;
 using System.Net;
 using System.Net.Http;
 using Prodept.Commons;
+using IdentityServer4.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Prodept
 {
@@ -64,14 +69,18 @@ namespace Prodept
             //    config.ResponseType = "code";
             //});
 
+            var jwks = this.GetJWKs();
+
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
               {
-                  options.Authority = Configuration.GetSection("CentralAuth").Value;
                   options.Audience = Configuration.GetSection("IdentityServerAccount").GetSection("ApiName").Value;
                   options.TokenValidationParameters = new TokenValidationParameters
                   {
-                      ValidateAudience = false
+                      ValidateAudience = false,
+                      ValidIssuer = Configuration.GetSection("CentralAuth").Value,
+                      IssuerSigningKeys = jwks
                   };
               });
 
@@ -128,6 +137,14 @@ namespace Prodept
                     return true;
                 }
             });
+            services.AddHttpClient("bebas").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                ClientCertificateOptions = ClientCertificateOption.Manual,
+                ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) =>
+                {
+                    return true;
+                }
+            });
             //services.AddHttpClient();
             services.AddHttpContextAccessor();
             services.AddScoped<IUserDeviceService, UserDeviceService>();
@@ -164,6 +181,14 @@ namespace Prodept
             //           .AllowAnyHeader();
             //});
 
+            FileExtensionContentTypeProvider provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".webmanifest"] = "application/manifest+json";
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                ContentTypeProvider = provider
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -188,5 +213,31 @@ namespace Prodept
                 }
             });
         }
+
+        //This method is used for getting jwks from identity server jwks endpoint
+        private List<JsonWebKey> GetJWKs()
+        {
+            var jwksJson = @"{
+                        ""keys"": [
+                            {
+                                ""kty"": ""RSA"",
+                                ""use"": ""sig"",
+                                ""kid"": ""7C8A0CFE71B701FB536F9680EB4DE2B0745F343F"",
+                                ""x5t"": ""fIoM_nG3AftTb5aA603isHRfND8"",
+                                ""e"": ""AQAB"",
+                                ""n"": ""qV_cfXA5X0R0fRMKM0X1uZ2bnw-_GopeSTYrr-_zc5LWq1k6lpG5oUPWsm5vkbwIAQknBxDyFU6bffxRkCjWDDlKrtizeo-3bFEF-wcZFkl94qMj8BkEm4vT8CaaLEy42oNJSyjwBI-qRxU-Qvkkw1gjAUfNIbn5pwwpwwNB0omnDq0kdGI5w4fi9x2Gn7j3m7s6tJuS9Emj2G-G5_JrEFMs-h_-rREBUsU_T9i5NFpLtwYnM7vRlpu4T_NRmySNtM08aRSUfmgz96aTmaOsNIHRnYWbda8EZDlNnlLqFaVTAHKodLR_jfexx--kN9HVoT3q6TUeHL9cGfUVHsjeeQ"",
+                                ""x5c"": [
+                                    ""MIIC7DCCAdSgAwIBAgIQJ9UOs32vdpNC5WhjOIZSUTANBgkqhkiG9w0BAQsFADAUMRIwEAYDVQQDEwlsb2NhbGhvc3QwHhcNMjAwMzMwMDQxNDQ3WhcNMjUwMzMwMDAwMDAwWjAUMRIwEAYDVQQDEwlsb2NhbGhvc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCpX9x9cDlfRHR9EwozRfW5nZufD78ail5JNiuv7/NzktarWTqWkbmhQ9aybm+RvAgBCScHEPIVTpt9/FGQKNYMOUqu2LN6j7dsUQX7BxkWSX3ioyPwGQSbi9PwJposTLjag0lLKPAEj6pHFT5C+STDWCMBR80hufmnDCnDA0HSiacOrSR0YjnDh+L3HYafuPebuzq0m5L0SaPYb4bn8msQUyz6H/6tEQFSxT9P2Lk0Wku3Biczu9GWm7hP81GbJI20zTxpFJR+aDP3ppOZo6w0gdGdhZt1rwRkOU2eUuoVpVMAcqh0tH+N97HH76Q30dWhPerpNR4cv1wZ9RUeyN55AgMBAAGjOjA4MAsGA1UdDwQEAwIEsDATBgNVHSUEDDAKBggrBgEFBQcDATAUBgNVHREEDTALgglsb2NhbGhvc3QwDQYJKoZIhvcNAQELBQADggEBAGiZrAHGLRYsG5wBeirQ5CO7JNnk500br2NDsTPel27YP60sjXRSbaXQot581zzRpb/u7WbZpGKKRt0e3+o3A17fjC4578ejAcJ7QachXvwvt5r91jDR978WUo9pF7IFJo89VBdFoBnlS65ROh27sASdIlN711nP+SImxN5+xUQx8PTBnSvzwy5WDSLyX0u4WSFYp2fVMm5kF2tNi2u7th39Yo/ASvxiPI/wd6fcAUUGcYVamEfh4BawbcU/mXM/3QSgmxASYKy6aNOz07gLcYgT+luPMCbIqu1ilHnZyQ45TnTXY1Bju6TPNG0RPcWuye8UHqaAojTE4cQl5Ws7GSA=""
+                                ],
+                                ""alg"": ""RS256""
+                            }
+                        ]
+                    }";
+            var jwks = new JsonWebKeySet(jwksJson);
+            var jwkes = jwks.Keys.ToList();
+            //var jwk = jwks.Keys.First();
+            return jwkes;
+        }
+
     }
 }

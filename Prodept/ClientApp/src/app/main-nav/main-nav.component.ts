@@ -14,6 +14,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatInput } from '@angular/material/input';
 import { ProjectService } from '../services/project.service';
 import { ProjectList } from '../models/project-list';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-main-nav',
@@ -69,6 +70,9 @@ export class MainNavComponent implements OnInit, OnDestroy {
       );
     });
   }
+  queryingParam(projectName: string) {
+    return JSON.stringify({projek: projectName});
+  }
   ToggleTheme() {
     this._themeService.ToggleTheme(this._renderer);
   }
@@ -79,9 +83,7 @@ export class MainNavComponent implements OnInit, OnDestroy {
                                 .subscribe(
                                   (x: CustomResponse<any>) => {
                                     this.leftsidenav.close();
-                                    this._tokenService.removeToken();
-                                    this._authService.setLoggedUser();
-                                    this._router.navigate(['/login'], {replaceUrl: true});
+                                    this._authService.clearStateUser();
                                   },
                                   (err: HttpErrorResponse) => {
                                   },
@@ -100,13 +102,23 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   fetchProject() {
-    let val = this.searchbar.nativeElement.value;
-    if (val === null) {
-      val = '';
-    }
-    this._projectService.getListProject(val).subscribe(
-      res => this.items = res
-    );
+
+    this._authService.user$.subscribe(x => {
+      const nik = x.nik;
+      console.log(nik);
+
+      if (nik !== null && nik !== '' && nik !== undefined ) {
+        let val = this.searchbar.nativeElement.value;
+        if (val === null) {
+          val = '';
+        }
+        this._projectService.getListProject(val).subscribe(
+          res => this.items = res
+        );
+      }
+    });
+
+
   }
 
 

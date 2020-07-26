@@ -1,6 +1,62 @@
-<p>dashboard works!</p>
-<div>
-  <button mat-button color="primary" (click)="AddSubscription()">Show Data</button>
-  <button mat-button color="accent" (click)="GetNotif()">Get Notif</button>
+<div class="container" *ngIf="user.nik!==''">
+
+
+<h2 class="mat-h2">{{user.nama}}</h2>
+<h3 class="mat-h3">{{user.nik}}</h3>
+
+<div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"> 
+  <div class="form-cont">
+    <label class="custom-label-form">Email</label>
+    <mat-form-field appearance="legacy" fxFlexFill>
+      <!-- <mat-label class="mat-h3">{{ data.label }}</mat-label> -->
+      <input
+        matInput
+        [readonly]="true"
+        [value]="user.email"
+        type="email"
+      />
+    </mat-form-field>
+  </div>
+  <div class="form-cont">
+    <label class="custom-label-form">EXT</label>
+    <mat-form-field appearance="legacy" fxFlexFill>
+      <!-- <mat-label class="mat-h3">{{ data.label }}</mat-label> -->
+      <input
+        matInput
+        [readonly]="true"
+        [value]="user.ext"
+        type="text"
+      />
+    </mat-form-field>
+  </div>
+  <div class="form-cont">
+    <label class="custom-label-form">Direktorat</label>
+    <mat-form-field appearance="legacy" fxFlexFill>
+      <!-- <mat-label class="mat-h3">{{ data.label }}</mat-label> -->
+      <input
+        matInput
+        [readonly]="true"
+        [value]="user.direktorat"
+        type="text"
+      />
+    </mat-form-field>
+  </div>
+  <div class="form-cont">
+    <label class="custom-label-form">Departemen</label>
+    <mat-form-field appearance="legacy" fxFlexFill>
+      <!-- <mat-label class="mat-h3">{{ data.label }}</mat-label> -->
+      <input
+        matInput
+        [readonly]="true"
+        [value]="user.departemen"
+        type="text"
+      />
+    </mat-form-field>
+  </div>
 </div>
-  
+
+<div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="0px" style="margin-top:30px;">
+  <button mat-raised-button color="primary" (click)="AddSubscription()">Subscription</button>
+  <button mat-raised-button color="accent" (click)="GetNotif()">Check Notif</button>
+</div>
+</div>

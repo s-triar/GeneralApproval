@@ -37,6 +37,9 @@ namespace Prodept.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("SubTitle")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Title")
                         .HasColumnType("varchar(255)");
 

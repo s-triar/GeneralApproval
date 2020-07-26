@@ -1,6 +1,6 @@
-<div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="14px">
+<div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="14px" style="width: 100%;">
   <label class="custom-label-form">{{ data.label }}</label>
-  <div style="max-height: 400px; overflow: auto;" class="mat-elevation-z8">
+  <div style="max-height: 400px; overflow: auto;" class="mat-elevation-z2">
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container
         matColumnDef="{{ column.key }}"

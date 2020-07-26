@@ -30,6 +30,7 @@ namespace Prodept.Datas
             entityreqlist.Property(p => p.Detail).HasColumnType("longtext");
             entityreqlist.Property(p => p.Status).HasColumnType("varchar(255)");
             entityreqlist.Property(p => p.Title).HasColumnType("varchar(255)");
+            entityreqlist.Property(p => p.SubTitle).HasColumnType("varchar(255)");
             entityreqlist.Property(p => p.Category).HasColumnType("varchar(255)");
             entityreqlist.Property(p => p.UrlProject).HasColumnType("varchar(255)");
             entityreqlist.Property(p => p.UrlAction).HasColumnType("varchar(255)");

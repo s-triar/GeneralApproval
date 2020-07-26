@@ -50,7 +50,7 @@ namespace Prodept.Controllers
                 {
                     Password = user.Password,
                     UserName = user.Nik,
-                    Address = this._config.GetSection("CentralAuth").Value + "connect/token",
+                    Address = this._config.GetSection("CentralAuth").Value + "/connect/token",
                     ClientId = this._config.GetSection("IdentityServerAccount").GetSection("ClientId").Value,
                     ClientSecret = this._config.GetSection("IdentityServerAccount").GetSection("ClientSecret").Value,
                     GrantType = GrantType.ResourceOwnerPassword,
@@ -71,7 +71,7 @@ namespace Prodept.Controllers
             {
                 var res = new CustomResponse()
                 {
-                    message = "",
+                    message = "Pengguna berhasil masuk",
                     title = "Login Berhasil",
                     ok = true,
                     data = tokenRes.AccessToken
@@ -92,7 +92,6 @@ namespace Prodept.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetUserProfile()
         {
-            return Ok(new { aa= "fawfafafaf"});
             try
             {
                 var s = HttpContext.User.Claims;
@@ -104,7 +103,7 @@ namespace Prodept.Controllers
 
                 var server = _httpClientFactory.CreateClient(AppEnum.AuthCentralHttp);
                 server.SetBearerToken(Token);
-                var link = _config.GetSection("CentralAuth").Value + "api/User/GetDetailUser?Kode=" + nik;
+                var link = _config.GetSection("CentralAuth").Value + "/api/User/GetDetailUser?Kode=" + nik;
                 var request = new HttpRequestMessage(HttpMethod.Get, link);
                 server.SetBearerToken(Token);
                 var resproj = await server.SendAsync(request);

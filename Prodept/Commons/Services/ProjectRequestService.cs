@@ -73,6 +73,7 @@ namespace Prodept.Commons.Services
                                     Detail = null,
                                     Status = x.Status,
                                     Title = x.Title,
+                                    SubTitle = x.SubTitle,
                                     UrlAction = null,
                                     UrlProject = null,
                                     ProjectName = x.ProjectName

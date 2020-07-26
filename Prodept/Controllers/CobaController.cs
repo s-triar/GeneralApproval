@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Prodept.Commons;
 using Prodept.Datas;
 using Prodept.Models;
 
@@ -33,8 +34,8 @@ namespace Prodept.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> Test()
         {
-            var server = _httpClientFactory.CreateClient();
-            var discoveryDoc = await server.GetDiscoveryDocumentAsync("https://localhost:44308/");
+            var server = _httpClientFactory.CreateClient(AppEnum.AuthCentralHttp);
+            var discoveryDoc = await server.GetDiscoveryDocumentAsync("https://localhost:44308");
             var tokenRes = await server.RequestPasswordTokenAsync(
                 new PasswordTokenRequest
                 {
@@ -54,8 +55,8 @@ namespace Prodept.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> Test2()
         {
-            var server = _httpClientFactory.CreateClient();
-            var discoveryDoc = await server.GetDiscoveryDocumentAsync("https://localhost:44308/");
+            var server = _httpClientFactory.CreateClient(AppEnum.AuthCentralHttp);
+            var discoveryDoc = await server.GetDiscoveryDocumentAsync("https://localhost:44308");
             var tokenRes = await server.RequestClientCredentialsTokenAsync(
                 new ClientCredentialsTokenRequest
                 {
@@ -73,7 +74,7 @@ namespace Prodept.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> Test3()
         {
-            var server = _httpClientFactory.CreateClient();
+            var server = _httpClientFactory.CreateClient(AppEnum.AuthCentralHttp);
             var discoveryDoc = await server.GetDiscoveryDocumentAsync("https://localhost:5001/");
             var tokenRes = await server.RequestAuthorizationCodeTokenAsync(
                 new AuthorizationCodeTokenRequest

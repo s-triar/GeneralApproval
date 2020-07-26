@@ -5,6 +5,7 @@ import { User } from '../models/user';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { TokenService } from './token.service';
 import { UserService } from './user.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class AuthService {
   user$: Observable<User> = this.user.asObservable();
   user_roles$: Observable<string[]> = this.user_roles.asObservable();
 
-  constructor(private _http: HttpClient, private _tokenService: TokenService, private _userService: UserService) {
+  constructor(private _router: Router, private _http: HttpClient, private _tokenService: TokenService, private _userService: UserService) {
   }
 
   login(payload: Login): Observable<any> {
@@ -41,5 +42,11 @@ export class AuthService {
       this.user.next(new User());
       this.user_roles.next([]);
     }
+  }
+
+  clearStateUser() {
+    this._tokenService.removeToken();
+    this.setLoggedUser();
+    this._router.navigate(['/login'], {replaceUrl: true});
   }
 }

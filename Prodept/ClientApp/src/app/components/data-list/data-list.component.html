@@ -1,4 +1,4 @@
-<div>
+<div class="container-list">
   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
     <mat-form-field appearance="fill">
       <mat-label>Cari Data</mat-label>
@@ -14,7 +14,7 @@
     </button>
   </div>
   <mat-list class="data-list">
-    <mat-list-item *ngFor="let d of data" [routerLink]="['/detail']">
+    <mat-list-item *ngFor="let d of data" (click)="goToDetail(d.id)">
       <div
         fxLayout="row"
         fxLayoutAlign="start center"

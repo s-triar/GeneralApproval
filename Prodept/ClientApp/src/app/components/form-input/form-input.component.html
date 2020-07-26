@@ -5,8 +5,8 @@
     matInput
     [readonly]="data.disabled"
     [value]="data.data"
-    [type]="type"
+    [type]="data.typeForm"
     [name]="data.name"
-    (change)="change($event)"
+    (change)="changeInput($event)"
   />
 </mat-form-field>

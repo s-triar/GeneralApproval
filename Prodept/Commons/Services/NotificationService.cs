@@ -83,7 +83,9 @@ namespace Prodept.Commons.Services
                 }
                 catch (WebPushException exception)
                 {
-                    Console.WriteLine("Http STATUS code" + exception.StatusCode);
+                    this._context.UserDevices.Remove(d);
+                    this._context.SaveChanges();
+                    //Console.WriteLine("Http STATUS code" + exception.StatusCode);
                 }
             }
 

@@ -8,6 +8,7 @@
     fxLayout="column"
     fxLayoutAlign="start start"
     fxLayoutGap="4px"
+    (change)="changeInput($event)"
   >
     <mat-radio-button
       *ngFor="let item of data.data"

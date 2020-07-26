@@ -1,7 +1,6 @@
-import { DaftarDataType } from "./enums/list-data-enum";
+import { DaftarDataType } from './enums/list-data-enum';
 
 export class DataDaftar {
-  unique: string;
   id: string;
   title: string;
   status: string;

@@ -1,4 +1,4 @@
-import { DetailDataType } from "./enums/detail-data-enum";
+import { DetailDataType } from './enums/detail-data-enum';
 
 export class FormInput {
   index: number;
@@ -7,6 +7,8 @@ export class FormInput {
   data: string | number;
   label: string;
   name: string;
+  required: boolean;
+  typeForm: string;
 }
 
 export class FormFile {
@@ -29,6 +31,7 @@ export class FormDate {
   data: Date[];
   label: string;
   range: boolean;
+  required: boolean;
   name: string;
 }
 
@@ -37,6 +40,8 @@ export class FormCheckBox {
   type: string = DetailDataType.CHECKBOX;
   label: string;
   data: FormCheckBoxItem[];
+  name: string;
+  required: boolean;
 }
 
 export class FormCheckBoxItem {
@@ -44,7 +49,6 @@ export class FormCheckBoxItem {
   checked: boolean;
   label: string;
   data: string;
-  name: string;
 }
 
 export class FormTextArea {
@@ -54,6 +58,7 @@ export class FormTextArea {
   data: string;
   label: string;
   name: string;
+  required: boolean;
 }
 
 export class FormRadio {
@@ -63,6 +68,7 @@ export class FormRadio {
   data: FormRadioItem[];
   label: string;
   name: string;
+  required: boolean;
   initialValue: string;
 }
 export class FormRadioItem {
@@ -78,6 +84,7 @@ export class FormSelect {
   data: FormSelectItem[];
   label: string;
   name: string;
+  required: boolean;
   initialValue: string;
 }
 export class FormSelectItem {
@@ -91,7 +98,6 @@ export class FormList {
   type: string = DetailDataType.LIST;
   data: string[];
   label: string;
-  name: string;
 }
 export class FormTable {
   index: number;
@@ -99,7 +105,6 @@ export class FormTable {
   header: FormTableHeader[];
   data: any[];
   label: string;
-  name: string;
 }
 
 export class FormTableHeader {
@@ -107,10 +112,18 @@ export class FormTableHeader {
   title: string;
 }
 
+export class FormGroup {
+  title: string;
+  index: number;
+  type: string = DetailDataType.FORMGROUP;
+}
+
+
 export class Detail {
   title: string;
   subtitle: string;
   link: string;
+  urlProject: string;
   data: (
     | FormTable
     | FormCheckBox
@@ -121,5 +134,6 @@ export class Detail {
     | FormRadio
     | FormSelect
     | FormTextArea
+    | FormGroup
   )[];
 }
