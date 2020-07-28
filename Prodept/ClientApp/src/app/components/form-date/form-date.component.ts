@@ -32,7 +32,7 @@ export class FormDateComponent implements OnInit {
     if (this.data.range === true) {
       this.range.get('start').setValue(this.data.data[0]);
       this.range.get('end').setValue(this.data.data[1]);
-      if (this.data.disabled === false && this.data.data.length === 2) {
+      if (this.data.required === true && this.data.data.length === 2) {
         const name = this.data.name;
         const start = new Date(this.data.data[0].valueOf());
         this._approvalService.add(`start:=${name}`, start);
@@ -40,7 +40,7 @@ export class FormDateComponent implements OnInit {
         this._approvalService.add(`end:=${name}`, end);
       }
     } else {
-      if (this.data.disabled === false && this.data.data.length === 1) {
+      if (this.data.required === true && this.data.data.length === 1) {
         const name = this.data.name;
         const d = new Date(this.data.data[0].valueOf());
         this._approvalService.add(`${name}`, d);

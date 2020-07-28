@@ -36,6 +36,7 @@
     "core-js": "^3.6.5",
     "gzipper": "^4.0.0",
     "moment": "2.24.0",
+    "ngx-device-detector": "^1.4.6",
     "rxjs": "^6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"

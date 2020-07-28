@@ -14,8 +14,10 @@ import {
   FormCheckBoxItem,
   Detail,
   FormGroup,
+  FormAutoComplete,
 } from '../models/detail-data';
 import { DetailDataType } from '../models/enums/detail-data-enum';
+import { RequiredWhenType } from '../models/enums/required-when-type.enum';
 
 const rs: (
   | FormTable
@@ -28,6 +30,7 @@ const rs: (
   | FormSelect
   | FormTextArea
   | FormGroup
+  | FormAutoComplete
 )[] = [];
 const f1: FormInput = {
   index: 1,
@@ -38,7 +41,8 @@ const f1: FormInput = {
   label: 'Input String',
   name: 'input_string',
   typeForm: 'text',
-  required: false
+  required: false,
+  requiredWhen: null
 };
 rs.push(f1);
 const f2: FormInput = {
@@ -49,7 +53,8 @@ const f2: FormInput = {
   label: 'Input Number',
   name: 'input_number',
   typeForm: 'number',
-  required: false
+  required: false,
+  requiredWhen: null
 };
 rs.push(f2);
 const f3: FormDate = {
@@ -60,7 +65,8 @@ const f3: FormDate = {
   label: 'Input Date',
   name: 'input_date',
   range: false,
-  required: false
+  required: true,
+  requiredWhen: RequiredWhenType.NOT_APPROVE
 };
 rs.push(f3);
 
@@ -72,7 +78,8 @@ const f4: FormDate = {
   label: 'Input Date Range',
   name: 'input_date_range',
   range: true,
-  required: false
+  required: false,
+  requiredWhen: null
 };
 rs.push(f4);
 const f5: FormTextArea = {
@@ -83,7 +90,8 @@ const f5: FormTextArea = {
   disabled: false,
   label: 'Input Text Area',
   name: 'input_text_area',
-  required: false
+  required: false,
+  requiredWhen: null
 };
 rs.push(f5);
 const f6: FormList = {
@@ -146,7 +154,8 @@ const f8: FormSelect = {
   label: 'Select data',
   name: 'sel_data',
   initialValue: null,
-  required: false
+  required: true,
+  requiredWhen: null
 };
 rs.push(f8);
 
@@ -187,7 +196,8 @@ const f10: FormRadio = {
   disabled: false,
   initialValue: 'radio2',
   name: 'radiopilihan',
-  required: true
+  required: true,
+  requiredWhen: RequiredWhenType.BOTH
 };
 rs.push(f10);
 const cbdatas: FormCheckBoxItem[] = [];
@@ -212,7 +222,8 @@ const f11: FormCheckBox = {
   data: cbdatas,
   label: 'Checkbox items',
   name: 'nama',
-  required: false
+  required: true,
+  requiredWhen: RequiredWhenType.APPROVE
 };
 rs.push(f11);
 
@@ -238,6 +249,7 @@ const datamou: (
   | FormSelect
   | FormTextArea
   | FormGroup
+  | FormAutoComplete
 )[] = [];
 
 const groupMou: FormGroup = {
@@ -255,7 +267,8 @@ const katmou: FormInput = {
   name: 'katmou',
   type: DetailDataType.INPUT,
   typeForm: 'text',
-  required: false
+  required: false,
+  requiredWhen: null
 };
 datamou.push(katmou);
 
@@ -267,7 +280,8 @@ const tglmou: FormDate = {
   range: false,
   data: [],
   type: DetailDataType.DATE,
-  required: false
+  required: false,
+  requiredWhen: null
 };
 datamou.push(tglmou);
 
@@ -279,7 +293,8 @@ const tglmou2: FormDate = {
   range: true,
   data: [],
   type: DetailDataType.DATE,
-  required: false
+  required: false,
+  requiredWhen: null
 };
 datamou.push(tglmou2);
 
@@ -291,7 +306,8 @@ const fee: FormInput = {
   name: 'ffee',
   type: DetailDataType.INPUT,
   typeForm: 'number',
-  required: false
+  required: false,
+  requiredWhen: null
 };
 datamou.push(fee);
 
@@ -303,7 +319,8 @@ const inves: FormInput = {
   name: null,
   type: DetailDataType.INPUT,
   typeForm: 'number',
-  required: false
+  required: false,
+  requiredWhen: null
 };
 datamou.push(inves);
 

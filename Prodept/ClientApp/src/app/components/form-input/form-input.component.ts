@@ -13,7 +13,7 @@ export class FormInputComponent implements OnInit {
   constructor(private _approvalService: ApprovalService) {}
 
   ngOnInit(): void {
-    if (this.data.disabled === false && this.data.data !== null && this.data.data !== 0) {
+    if (this.data.required === true && this.data.data !== null && this.data.data !== 0) {
       this._approvalService.add(this.data.name, this.data.data);
     }
   }

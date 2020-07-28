@@ -46,7 +46,8 @@ import { FormGroupComponent } from './components/form-group/form-group.component
 import { WarningRequiredComponent } from './components/warning-required/warning-required.component';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
-
+import { FormAutocompleteComponent } from './components/form-autocomplete/form-autocomplete.component';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 export const MY_FORMATS = {
   parse: {
@@ -94,6 +95,7 @@ export const MY_FORMATS = {
     ApprovalWarningComponent,
     FormGroupComponent,
     WarningRequiredComponent,
+    FormAutocompleteComponent,
   ],
   entryComponents: [
     SnackbarNotifComponent,
@@ -112,6 +114,7 @@ export const MY_FORMATS = {
     FormDateComponent,
     FormFileComponent,
     FormGroupComponent,
+    FormAutocompleteComponent,
     ApprovalConfirmationComponent,
     ApprovalWarningComponent,
     WarningRequiredComponent
@@ -129,6 +132,7 @@ export const MY_FORMATS = {
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
+    DeviceDetectorModule
   ],
   providers: [...interceptorProviders,
     {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SwUpdate, SwPush } from '@angular/service-worker';
+import { SwUpdate, SwPush, SwRegistrationOptions } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
 import { NotifService } from 'src/app/services/notif.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
   }
   AddSubscription() {
     if (!this._swPush.isEnabled) {
-      this._snackBar.open('Notification Dimatikan!', null, {
+      this._snackBar.open('Notification Dimatikan/Diblock!', null, {
         duration: 2000,
       });
       return;
@@ -54,7 +54,6 @@ export class DashboardComponent implements OnInit {
       if (nik !== null) {
         this._notifService.AddSubscription(key, nik).subscribe();
       }
-
      })
     .catch(err => console.log(err))
     ;

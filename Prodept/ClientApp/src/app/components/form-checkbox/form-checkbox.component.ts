@@ -14,11 +14,14 @@ export class FormCheckboxComponent implements OnInit {
   constructor(private _approvalService: ApprovalService) {}
 
   ngOnInit(): void {
+    if (this.data.required === true) {
       for (const item of this.data.data) {
-        if (item.disabled === false && item.checked) {
+        if (item.checked) {
           this._approvalService.addPair(this.data.name, item.data);
         }
       }
+    }
+
   }
 
   checkStatus(event: MatCheckboxChange) {

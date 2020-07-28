@@ -8,6 +8,7 @@ export class FormInput {
   label: string;
   name: string;
   required: boolean;
+  requiredWhen: string;
   typeForm: string;
 }
 
@@ -32,6 +33,7 @@ export class FormDate {
   label: string;
   range: boolean;
   required: boolean;
+  requiredWhen: string;
   name: string;
 }
 
@@ -42,6 +44,7 @@ export class FormCheckBox {
   data: FormCheckBoxItem[];
   name: string;
   required: boolean;
+  requiredWhen: string;
 }
 
 export class FormCheckBoxItem {
@@ -59,6 +62,7 @@ export class FormTextArea {
   label: string;
   name: string;
   required: boolean;
+  requiredWhen: string;
 }
 
 export class FormRadio {
@@ -69,6 +73,7 @@ export class FormRadio {
   label: string;
   name: string;
   required: boolean;
+  requiredWhen: string;
   initialValue: string;
 }
 export class FormRadioItem {
@@ -85,6 +90,7 @@ export class FormSelect {
   label: string;
   name: string;
   required: boolean;
+  requiredWhen: string;
   initialValue: string;
 }
 export class FormSelectItem {
@@ -118,7 +124,24 @@ export class FormGroup {
   type: string = DetailDataType.FORMGROUP;
 }
 
-
+export class FormAutoComplete {
+  index: number;
+  type: string = DetailDataType.AUTOCOMPLETE;
+  disabled: boolean;
+  data: FormAutoCompleteItem[];
+  label: string;
+  name: string;
+  required: boolean;
+  requiredWhen: string;
+  initialValue: string;
+  link: string;
+  provideFilter: boolean; // this will use label as query param on that link. e.g link?label=an
+                          // if not, filtering will be handle by general approval
+}
+export class FormAutoCompleteItem {
+  data: string;
+  label: string;
+}
 export class Detail {
   title: string;
   subtitle: string;
@@ -135,5 +158,6 @@ export class Detail {
     | FormSelect
     | FormTextArea
     | FormGroup
+    | FormAutoComplete
   )[];
 }

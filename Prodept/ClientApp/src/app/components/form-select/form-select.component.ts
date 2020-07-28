@@ -14,7 +14,7 @@ export class FormSelectComponent implements OnInit {
   constructor(private _approvalService: ApprovalService) {}
 
   ngOnInit(): void {
-    if (this.data.disabled === false && this.data.initialValue !== null) {
+    if (this.data.required === true && this.data.initialValue !== null) {
       this._approvalService.add(this.data.name, this.data.initialValue);
     }
   }

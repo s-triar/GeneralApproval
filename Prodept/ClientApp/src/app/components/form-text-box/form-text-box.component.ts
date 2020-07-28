@@ -12,7 +12,7 @@ export class FormTextBoxComponent implements OnInit {
   constructor(private _approvalService: ApprovalService) {}
 
   ngOnInit(): void {
-    if (this.data.disabled === true && this.data.data !== null) {
+    if (this.data.required === true && this.data.data !== null) {
       this._approvalService.add(this.data.name, this.data.data);
     }
   }

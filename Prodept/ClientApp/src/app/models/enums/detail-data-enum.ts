@@ -9,4 +9,5 @@ export enum DetailDataType {
   LIST = 'LIST',
   TABLE = 'TABLE',
   FORMGROUP = 'TITLEGROUP',
+  AUTOCOMPLETE = 'AUTOCOMPLETE'
 }
