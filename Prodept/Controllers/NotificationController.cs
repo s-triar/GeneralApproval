@@ -28,7 +28,7 @@ namespace Prodept.Controllers
             try
             {
                 var ret = new CustomResponse();
-                var res = this.notif.add(ClientBrowser.Key, ClientBrowser.Nik);
+                var res = this.notif.add(ClientBrowser.Key, ClientBrowser.Nik, ClientBrowser.Browser, ClientBrowser.Device, ClientBrowser.Os);
                 if(res > 0)
                 {
                     ret.message = "";

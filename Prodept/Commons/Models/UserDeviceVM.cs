@@ -9,5 +9,8 @@ namespace Prodept.Commons.Models
     {
         public string Key { get; set; }
         public string Nik { get; set; }
+        public string Browser { get; set; }
+        public string Device { get; set; }
+        public string Os { get; set; }
     }
 }

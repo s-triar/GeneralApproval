@@ -11,6 +11,9 @@ namespace Prodept.Commons.Models
         [Key]
         public Guid Id { get; set; }
         public string Nik { get; set; }
+        public string Browser { get; set; }
+        public string Device { get; set; }
+        public string Os { get; set; }
         public string DeviceKey { get; set; }
     }
 }

@@ -38,6 +38,9 @@ namespace Prodept.Datas
             var entitydeviceuser = builder.Entity<UserDevice>();
             entitydeviceuser.Property(p => p.DeviceKey).HasColumnType("text");
             entitydeviceuser.Property(p => p.Nik).HasColumnType("varchar(255)");
+            entitydeviceuser.Property(p => p.Device).HasColumnType("varchar(255)");
+            entitydeviceuser.Property(p => p.Browser).HasColumnType("varchar(255)");
+            entitydeviceuser.Property(p => p.Os).HasColumnType("varchar(255)");
             //builder.Entity<Project>()
             //       .HasIndex(b => b.ClientId)
             //       .IsUnique();

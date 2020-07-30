@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RequestList } from '../models/request-list';
 import { QueryStringBuilder } from '../utils/query-string-builder';
+import { AutoCompleteRequest } from '../models/autocomplete-request';
+import { CustomResponse } from '../models/custom-response';
+import { FormAutoCompleteItem } from '../models/detail-data';
 
 @Injectable({
   providedIn: 'root'
@@ -19,17 +22,19 @@ export class ProjectService {
   }
 
   getListRequestProject(payload: string): Observable<RequestList[]> {
-    // let header: HttpHeaders = new HttpHeaders();
-    // header = header.set('reqnoloadingdialog', 'true');
     return this._http.get<RequestList[]>(`api/Internal/GetListRequestProject`, {params: {name: payload }} );
   }
 
   getDetailRequestProject(payload: RequestList): Observable<any> {
     const params = QueryStringBuilder.BuildParametersFromSearch<RequestList>(payload);
-    // let header: HttpHeaders = new HttpHeaders();
-    // header = header.set('reqnoloadingdialog', 'true');
-    // header = header.set('reqnonotify', 'true');
     return this._http.get<RequestList>(`api/Internal/GetDetailRequestProject?${params}`);
+  }
+  getAutoCompleteListData(payload: AutoCompleteRequest): Observable<any> {
+    const params = QueryStringBuilder.BuildParametersFromSearch<AutoCompleteRequest>(payload);
+    let header: HttpHeaders = new HttpHeaders();
+    header = header.set('reqnoloadingdialog', 'true');
+    header = header.set('reqnonotify', 'true');
+    return this._http.get<CustomResponse<FormAutoCompleteItem[]>>(`api/Internal/GetAutoCompleteListData?${params}`, {headers: header});
   }
 
 }

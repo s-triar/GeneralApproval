@@ -109,9 +109,6 @@ namespace Prodept.Controllers
                 var resproj = await server.SendAsync(request);
                 if (resproj.IsSuccessStatusCode)
                 {
-                    //var responseStream = await resproj.Content.ReadAsAsync(Type.);
-                    //var user = JsonConvert.SerializeObject(responseStream);
-                    //var userDes = JsonConvert.DeserializeObject<User>(user);
                     var res = new CustomResponse()
                     {
                         message = "Berhasil mendapatkan data pengguna",

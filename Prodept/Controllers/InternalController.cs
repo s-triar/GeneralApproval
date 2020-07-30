@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Prodept.Commons.Interfaces;
 using Prodept.Commons.Models;
+using Prodept.Commons.Models.Forms;
 
 namespace Prodept.Controllers
 {
@@ -68,6 +69,56 @@ namespace Prodept.Controllers
 
 
         //Todo request for additional data e.g for list, option.
+        [Authorize]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAutoCompleteListData([FromQuery]string Link, [FromQuery]bool ProvideFilter, [FromQuery]string Search)
+        {
+            var author = HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
+            var rawtok = author.Value.FirstOrDefault(x => x.ToLower().Contains("bearer")).Split("Bearer ");
+            string token = rawtok[rawtok.Length - 1];
+            var proj = _httpClientFactory.CreateClient("bebas");
+            proj.SetBearerToken(token);
+            string matureLink = Link;
+            if (ProvideFilter)
+            {
+                if (Link.Contains("?"))
+                {
+                    matureLink += "&label=" + Search.ToLower();
+                }
+                else
+                {
+                    matureLink += "?label=" + Search.ToLower();
+                }
+            }
+            var resproj = await proj.GetAsync(matureLink);
+            if (resproj.IsSuccessStatusCode)
+            {
+                var temp = await resproj.Content.ReadAsAsync<List<FormAutoCompleteItem>>();
+                if (!ProvideFilter)
+                {
+                    temp = temp.Where(x => x.label.ToLower().Contains(Search.ToLower())).ToList();
+                }
+                var res = new CustomResponse()
+                {
+                    data = temp,
+                    message = "Data berhasil didapatkan",
+                    title = "Mendapatkan Data Sukses",
+                    ok = true
+                };
+                return Ok(res);
+            }
+            else
+            {
+                var res = new CustomResponse()
+                {
+                    data = JsonConvert.SerializeObject(resproj.Content),
+                    message = "Gagal Mendapatkan Data. Error Code: " + resproj.StatusCode,
+                    title = "Mendapatkan Data Gagal",
+                    ok = false
+                };
+                return BadRequest(res);
+            }
+        }
 
         //Todo request for downloading file
 

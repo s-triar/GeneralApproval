@@ -20,7 +20,7 @@ import { RequestList } from 'src/app/models/request-list';
   styleUrls: ['./detail.component.scss'],
 })
 export class DetailComponent implements OnInit {
-  data: Detail;
+  data: Detail ; // = exampleMou;
   dataUpload: DataUpload[] = [];
   dataDecision: boolean;
   apiName: string;
@@ -77,7 +77,7 @@ export class DetailComponent implements OnInit {
   }
 
   checkDataFormUpload(): boolean {
-    console.log(this.dataUpload);
+    // console.log(this.dataUpload);
     let safe = true;
     const key = 'required';
     for (const iterator of this.data.data) {
@@ -125,6 +125,8 @@ export class DetailComponent implements OnInit {
       console.log(q);
     }
   }
+  // Todo Modal Confirmation
+  // Todo Clear approval service data
   openWarningModal(message: string) {
     this._dialog.open(WarningRequiredComponent, {
       data: { message: message },

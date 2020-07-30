@@ -70,5 +70,12 @@
       fxLayoutAlign="start start"
       fxLayoutGap="0px"
     ></app-form-checkbox>
+    <app-form-autocomplete
+    [data]="item"
+    *ngIf="isFormAutoComplete(item.type)"
+    fxLayout="column"
+    fxLayoutAlign="start start"
+    fxLayoutGap="0px"
+  ></app-form-autocomplete>
   </ng-container>
 </div>

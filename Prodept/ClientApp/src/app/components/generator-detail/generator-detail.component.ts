@@ -9,6 +9,7 @@ import {
   FormRadio,
   FormSelect,
   FormTextArea,
+  FormAutoComplete,
 } from 'src/app/models/detail-data';
 import { DetailDataType } from 'src/app/models/enums/detail-data-enum';
 import { FormGroup } from '@angular/forms';
@@ -30,6 +31,7 @@ export class GeneratorDetailComponent implements OnInit {
     | FormSelect
     | FormTextArea
     | FormGroup
+    | FormAutoComplete
   )[];
   types = DetailDataType;
   constructor() {}
@@ -64,5 +66,8 @@ export class GeneratorDetailComponent implements OnInit {
   }
   isFormTextArea(data) {
     return data === this.types.TEXTAREA;
+  }
+  isFormAutoComplete(data) {
+    return data === this.types.AUTOCOMPLETE;
   }
 }

@@ -15,6 +15,7 @@ import {
   Detail,
   FormGroup,
   FormAutoComplete,
+  FormAutoCompleteItem,
 } from '../models/detail-data';
 import { DetailDataType } from '../models/enums/detail-data-enum';
 import { RequiredWhenType } from '../models/enums/required-when-type.enum';
@@ -324,6 +325,30 @@ const inves: FormInput = {
 };
 datamou.push(inves);
 
+
+const re: FormAutoCompleteItem[] = [];
+for (let index = 0; index < 100; index++) {
+  const y: FormAutoCompleteItem = {
+      label: 'label - ' + index,
+      data: index.toString()
+  };
+  re.push(y);
+}
+
+const at: FormAutoComplete = {
+  index: 0,
+  type : DetailDataType.AUTOCOMPLETE,
+  disabled: false,
+  data: re,
+  label: 'Coba auto complete',
+  name: 'autom',
+  required: false,
+  requiredWhen: RequiredWhenType.BOTH,
+  initialValue: null,
+  link: null,
+  provideFilter: false
+};
+datamou.push(at);
 
 
 export const exampleMou: Detail = {

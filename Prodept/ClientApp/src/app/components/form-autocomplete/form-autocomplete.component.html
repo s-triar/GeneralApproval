@@ -1,1 +1,21 @@
-<p>form-autocomplete works!</p>
+<label class="custom-label-form">{{ data.label }}</label>
+<mat-form-field appearance="legacy" fxFlexFill>
+    <input 
+        type="text" 
+        matInput 
+        #inputauto
+        [matAutocomplete]="auto">
+        <button
+            mat-icon-button
+            matSuffix
+            [disabled]="searching"
+            (click)="clearText()"
+          >
+            <mat-icon>{{ searching ? "hourglass_empty" : "close" }}</mat-icon>
+          </button>
+    <mat-autocomplete (optionSelected)="select($event)" #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let option of filteredOptions" [value]="option">
+        {{option.label}}
+      </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

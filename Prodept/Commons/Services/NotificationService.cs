@@ -21,9 +21,9 @@ namespace Prodept.Commons.Services
             this._configuration = configuration;
             this._context = context;
         }
-        public int add(string key, string username)
+        public int add(string key, string username, string browser, string device, string os)
         {
-            var temp = this._context.UserDevices.FirstOrDefault(x => x.DeviceKey == key);
+            var temp = this._context.UserDevices.FirstOrDefault(x => x.Nik == username && x.Browser == browser && x.Device == device && x.Os == os);
             if (temp != null)
             {
                 temp.DeviceKey = key;
@@ -35,7 +35,10 @@ namespace Prodept.Commons.Services
                 {
                     Id = Guid.NewGuid(),
                     DeviceKey = key,
-                    Nik = username
+                    Nik = username,
+                    Os = os,
+                    Device = device,
+                    Browser = browser
                 };
                 this._context.UserDevices.Add(n);
             }
@@ -48,16 +51,17 @@ namespace Prodept.Commons.Services
             var webPushClient = new WebPushClient();
             var j = this._configuration.GetSection("WebPushNotification").GetSection("PublicKey").Value;
             var k = this._configuration.GetSection("WebPushNotification").GetSection("PrivateKey").Value;
+            var s = this._configuration.GetSection("WebPushNotification").GetSection("Subject").Value;
             var publicKey = @j;
             var privateKey = @k;
-            var devices = this._context.UserDevices.Where(x => x.Nik == nik).AsEnumerable();
+            var devices = this._context.UserDevices.Where(x => x.Nik == nik).ToList();
             foreach(var d in devices)
             {
                 var clientkey = JsonConvert.DeserializeObject<ClientBrowser>(d.DeviceKey);
                 var pushEndpoint = @clientkey.endpoint;
                 var p256dh = @clientkey.keys.p256dh;
                 var auth = @clientkey.keys.auth;
-                var subject = @"mailto:example@example.com";
+                var subject = @s;
 
 
                 var subscription = new PushSubscription(pushEndpoint, p256dh, auth);
@@ -66,7 +70,7 @@ namespace Prodept.Commons.Services
                 {
                     var options = new
                     {
-                        notification = new
+                        notification = new 
                         {
                             title = title,
                             body = message,
@@ -83,7 +87,8 @@ namespace Prodept.Commons.Services
                 }
                 catch (WebPushException exception)
                 {
-                    this._context.UserDevices.Remove(d);
+                    var t = this._context.UserDevices.FirstOrDefault(x=>x.Id == d.Id);
+                    this._context.UserDevices.Remove(t);
                     this._context.SaveChanges();
                     //Console.WriteLine("Http STATUS code" + exception.StatusCode);
                 }
