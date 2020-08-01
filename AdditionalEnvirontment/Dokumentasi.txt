@@ -1,0 +1,25 @@
+Dokumentasi General Approval
+
+1. pastikan memakai https
+2. ganti konfigurasi di dalam appsetting.json
+3. untuk jwks dapatkan di {URI CENTRAL AUTH}/.well-known/openid-configuration/jwks
+
+
+daftar api:
+
+1. api/External/Add  = POST dengan data [FromBody] dengan data berupa class RequestListVM => untuk menambah data notif
+2. api/External/Remove = POST dengan data [FromBody] dengan data berupa class RequestListVM => untuk mengurangi data notif. harap panggil api ini ketika user telah approve/non approve data di projek kamu
+3. api/External/SendNotif = POST dengan data [FromBody] dengan data berupa class MessageNotifVM => untuk mengirim notifikasi ke pengguna (notif tidak melakukan apa apa ketika diklik)
+4. api/External/SendNotifWithClick = POST dengan data [FromBody] dengan data berupa class MessageNotifWithClickVM => untuk mengirim notifikasi ke pengguna (ketika diklik akan membuka halaman detail data) *data harus sudah ditambahkan sebelumnya
+
+
+untuk mengakses/memakai General Approval:
+
+1. Daftarkan project kamu di Central Auth
+2. follow general_approval
+3. tambahkan user ke dalam projek kamu.
+4. lihat cara akses dan model/class di projek cobamvc (untuk yang memakai .net core improve dari itu) di CobaController dan perhatikan juga di startup serta ClaimsAuthorizeAttribute jika ingin menspesifikkan role user
+   untuk projek yang memakai selain .net mvc dan .net core coba liat endpoint di {URI CENTRAL AUTH}/.well-known/openid-configuration
+   dan selebihnya seperti di projek cobamvc
+
+

@@ -77,5 +77,13 @@
     fxLayoutAlign="start start"
     fxLayoutGap="0px"
   ></app-form-autocomplete>
+  <app-form-image
+    [data]="item"
+    *ngIf="isFormImage(item.type)"
+    fxLayout="column"
+    fxLayoutAlign="start start"
+    fxLayoutGap="0px"
+  >
+  </app-form-image>
   </ng-container>
 </div>

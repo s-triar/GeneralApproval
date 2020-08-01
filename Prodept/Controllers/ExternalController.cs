@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Prodept.Commons;
 using Prodept.Commons.Interfaces;
 using Prodept.Commons.Models;
@@ -23,7 +24,7 @@ namespace Prodept.Controllers
             this._projectReqservice = projectReqservice;
             this._notifService = notifService;
         }
-        
+
         [Authorize]
         [HttpPost("[action]")]
         public async Task<IActionResult> Add([FromBody] RequestListVM data)
@@ -45,6 +46,8 @@ namespace Prodept.Controllers
                     temp.Title = data.Title;
                     temp.UrlAction = data.UrlAction;
                     temp.UrlProject = data.UrlProject;
+                    temp.Displayed = false;
+                    temp.CreatedAt = DateTime.Now;
                     var check = this._projectReqservice.GetSpecificId(temp);
                     if (check != null)
                     {
@@ -56,6 +59,8 @@ namespace Prodept.Controllers
                         check.UrlAction = data.UrlAction;
                         check.UrlProject = data.UrlProject;
                         check.ProjectName = data.ProjectName;
+                        check.Displayed = false;
+                        check.CreatedAt = DateTime.Now;
                         this._projectReqservice.Update(check);
                         r = this._projectReqservice.save();
                     }
@@ -67,19 +72,19 @@ namespace Prodept.Controllers
                     }
                     if (r > 0)
                     {
-                        var res = new CustomResponse()
+                        var res = new CustomResponse
                         {
                             message = "Data sudah ditambahkan",
                             title = "Penambahan Data Sukses",
                             ok = true
                         };
                         trans.Commit();
-                        this._notifService.sendNotif(data.Nik, data.DataNotif.Title, data.DataNotif.Message);
+                        this._notifService.sendNotifReferToData(data.Nik, data.ApiName, data.Id, data.DataNotif.Title, data.DataNotif.Message);
                         return Ok(res);
                     }
                     else
                     {
-                        var res = new CustomResponse()
+                        var res = new CustomResponse
                         {
                             message = "Data gagal ditambahkan",
                             title = "Penambahan Data Gagal",
@@ -93,14 +98,13 @@ namespace Prodept.Controllers
             }
             catch(Exception ex)
             {
-                var res = new CustomResponse()
+                var res = new CustomResponse
                 {
                     errors = new List<string>() { ex.InnerException.Message },
                     message = ex.Message,
                     title = "Error",
                     ok = false
                 };
-                trans.Rollback();
                 return BadRequest(res);
             }
 
@@ -114,7 +118,7 @@ namespace Prodept.Controllers
             int i = this._projectReqservice.save();
             if (i > 0)
             {
-                var res = new CustomResponse()
+                var res = new CustomResponse
                 {
                     message = "Data sudah dihapus",
                     title = "Penghapusan Data Sukses",
@@ -122,13 +126,33 @@ namespace Prodept.Controllers
                 };
                 return Ok(res);
             }
-            var resg = new CustomResponse()
+            var resg = new CustomResponse
             {
                 message = "Data tidak ada",
                 title = "Penghapusan Data Gagal",
                 ok = false
             };
             return BadRequest(resg);
+        }
+
+        [Authorize]
+        [HttpPost("[action]")]
+        public void SendNotif([FromBody] MessageNotifVM data)
+        {
+            var s = HttpContext.User.Claims;
+            var k = s.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+            var nik = k.Value;
+            this._notifService.sendNotif(data.Nik, data.Title, data.Message);
+        }
+
+        [Authorize]
+        [HttpPost("[action]")]
+        public void SendNotifWithClick([FromBody] MessageNotifWithClickVM data)
+        {
+            var s = HttpContext.User.Claims;
+            var k = s.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+            var nik = k.Value;
+            this._notifService.sendNotifReferToData(data.Nik,data.ApiName, data.Id, data.Title, data.Message);
         }
     }
 }

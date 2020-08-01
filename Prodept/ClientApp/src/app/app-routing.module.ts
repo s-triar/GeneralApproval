@@ -19,7 +19,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent, canActivate: [LoggedGuard] },
 
       { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
-      // { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
+      { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
       { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [GuestGuard] },
       { path: 'list/:apiName/:projectName', component: ListComponent, canActivate: [LoggedGuard] },
       { path: 'detail/:apiName/:id', component: DetailComponent, canActivate: [LoggedGuard] },

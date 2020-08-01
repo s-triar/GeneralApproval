@@ -48,6 +48,7 @@ import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/materia
 import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 import { FormAutocompleteComponent } from './components/form-autocomplete/form-autocomplete.component';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { FormImageComponent } from './components/form-image/form-image.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -96,6 +97,7 @@ export const MY_FORMATS = {
     FormGroupComponent,
     WarningRequiredComponent,
     FormAutocompleteComponent,
+    FormImageComponent,
   ],
   entryComponents: [
     SnackbarNotifComponent,
@@ -114,6 +116,7 @@ export const MY_FORMATS = {
     FormDateComponent,
     FormFileComponent,
     FormGroupComponent,
+    FormImageComponent,
     FormAutocompleteComponent,
     ApprovalConfirmationComponent,
     ApprovalWarningComponent,

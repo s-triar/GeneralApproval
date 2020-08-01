@@ -1,0 +1,11 @@
+@import "_theme.scss";
+
+.approve-text{
+    $primary: map-get($light-theme, primary);
+    color : mat-color($primary, default);
+}
+
+.not-approve-text{
+    $warn: map-get($light-theme, warn);
+    color : mat-color($warn, default);
+}

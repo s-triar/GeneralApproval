@@ -163,9 +163,10 @@ rs.push(f8);
 const fildatas: FormFileItem[] = [];
 for (let index = 0; index < 7; index++) {
   const p = new FormFileItem();
-  p.data = 'fhiahfhfoi';
-  p.label = 'File12141.pdf';
-  p.link = 'http://192.168.28.61/sewacooler/file/' + p.label;
+  p.fileName = 'ile12141.pdf';
+  p.label = 'File12141';
+  p.link = 'http://192.168.28.61/sewacooler/file/' + p.fileName;
+  p.typeDoc = 'application/pdf';
   fildatas.push(p);
 }
 
@@ -204,12 +205,12 @@ rs.push(f10);
 const cbdatas: FormCheckBoxItem[] = [];
 for (let index = 0; index < 4; index++) {
   const el = new FormCheckBoxItem();
-  el.checked = false;
+  el.checkSign = false;
   el.data = index.toString();
   el.disabled = false;
   el.label = 'Nama ' + index;
   if (index === 1) {
-    el.checked = true;
+    el.checkSign = true;
   }
   if (index === 2) {
     el.disabled = true;

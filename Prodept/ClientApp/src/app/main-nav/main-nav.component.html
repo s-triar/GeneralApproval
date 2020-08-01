@@ -49,9 +49,10 @@
           [routerLink]="['/list', item.apiName, item.projectName]"
           routerLinkActive="active"
           (click)="drawer.close()"
+          style="height: 92px;"
         >
-          <h4 matLine style="padding-top: 10px;">
-            <span [matBadge]="item.n" matBadgeColor="accent" matBadgeOverlap="false"
+          <h4 matLine style="padding-top: 10px;padding-left:12px; white-space: initial; word-wrap: break-word;">
+            <span [matBadge]="item.n" matBadgePosition="before" matBadgeColor="accent" matBadgeOverlap="true"
               >{{item.projectName}}</span
             >
             

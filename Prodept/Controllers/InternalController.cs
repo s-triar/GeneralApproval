@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -29,7 +30,6 @@ namespace Prodept.Controllers
             _projectReqservice = projectReqservice;
         }
 
-        //Todo Get List Projects of user
         [Authorize]
         [HttpGet("[action]")]
         public async Task<IEnumerable<ListProject>> GetListProject([FromQuery] string name)
@@ -44,7 +44,6 @@ namespace Prodept.Controllers
             return this._projectReqservice.GetListProject(nik, name.ToLower());
         }
 
-        //Todo Get List Request of project
         [Authorize]
         [HttpGet("[action]")]
         public async Task<IEnumerable<RequestList>> GetListRequestProject([FromQuery] string name)
@@ -55,7 +54,6 @@ namespace Prodept.Controllers
             return this._projectReqservice.GetListRequest(nik, name);
         }
 
-        //Todo Get Detail of Request
         [Authorize]
         [HttpGet("[action]")]
         public async Task<RequestList> GetDetailRequestProject([FromQuery] RequestList data)
@@ -67,12 +65,11 @@ namespace Prodept.Controllers
             return this._projectReqservice.GetSpecificId(data);
         }
 
-
-        //Todo request for additional data e.g for list, option.
         [Authorize]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAutoCompleteListData([FromQuery]string Link, [FromQuery]bool ProvideFilter, [FromQuery]string Search)
         {
+            if (Search == null) Search = "";
             var author = HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
             var rawtok = author.Value.FirstOrDefault(x => x.ToLower().Contains("bearer")).Split("Bearer ");
             string token = rawtok[rawtok.Length - 1];
@@ -93,12 +90,12 @@ namespace Prodept.Controllers
             var resproj = await proj.GetAsync(matureLink);
             if (resproj.IsSuccessStatusCode)
             {
-                var temp = await resproj.Content.ReadAsAsync<List<FormAutoCompleteItem>>();
+                var temp = await resproj.Content.ReadAsAsync<IEnumerable<FormAutoCompleteItem>>();
                 if (!ProvideFilter)
                 {
                     temp = temp.Where(x => x.label.ToLower().Contains(Search.ToLower())).ToList();
                 }
-                var res = new CustomResponse()
+                var res = new CustomResponse
                 {
                     data = temp,
                     message = "Data berhasil didapatkan",
@@ -109,7 +106,7 @@ namespace Prodept.Controllers
             }
             else
             {
-                var res = new CustomResponse()
+                var res = new CustomResponse
                 {
                     data = JsonConvert.SerializeObject(resproj.Content),
                     message = "Gagal Mendapatkan Data. Error Code: " + resproj.StatusCode,
@@ -120,10 +117,55 @@ namespace Prodept.Controllers
             }
         }
 
-        //Todo request for downloading file
+        [Authorize]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetFileData([FromQuery] string link, [FromQuery] string typeDoc, [FromQuery] string fileName)
+        {
+            var author = HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
+            var rawtok = author.Value.FirstOrDefault(x => x.ToLower().Contains("bearer")).Split("Bearer ");
+            string token = rawtok[rawtok.Length - 1];
+            var proj = _httpClientFactory.CreateClient("bebas");
+            proj.SetBearerToken(token);
+            var resproj = await proj.GetAsync(link);
+            if (resproj.IsSuccessStatusCode)
+            {
+                byte[] fileBytes = await resproj.Content.ReadAsByteArrayAsync();
+                return File(fileBytes, typeDoc, fileName);
+            }
+            var res = new CustomResponse
+            {
+                message = "Data file gagal didapatkan",
+                title = "Gagal",
+                ok = false
+            };
+            return BadRequest(res);
+        }
+        
+        [Authorize]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetImageData([FromQuery] string link, [FromQuery] string fileName)
+        {
+            var author = HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
+            var rawtok = author.Value.FirstOrDefault(x => x.ToLower().Contains("bearer")).Split("Bearer ");
+            string token = rawtok[rawtok.Length - 1];
+            var proj = _httpClientFactory.CreateClient("bebas");
+            proj.SetBearerToken(token);
+            var resproj = await proj.GetAsync(link);
+            if (resproj.IsSuccessStatusCode)
+            {
+                byte[] fileBytes = await resproj.Content.ReadAsByteArrayAsync(); 
+                return File(fileBytes, "image/*", fileName);
+            }
+            var res = new CustomResponse
+            {
+                message = "Data gambar gagal didapatkan",
+                title = "Gagal",
+                ok = false
+            };
+            return BadRequest(res);
+        }
 
-        //Todo request for downloading image
-
+        
 
         //Todo request for sending approval
         [Authorize]
@@ -149,9 +191,9 @@ namespace Prodept.Controllers
                 int i = this._projectReqservice.save();
                 if (i > 0)
                 {
-                    var res = new CustomResponse()
+                    var res = new CustomResponse
                     {
-                        message = "Data sudah dilakukan approval",
+                        message = "Data berhasil dilakukan approval",
                         title = "Approval Sukses",
                         ok = true
                     };
@@ -159,7 +201,7 @@ namespace Prodept.Controllers
                 }
                 else
                 {
-                    var res = new CustomResponse()
+                    var res = new CustomResponse
                     {
                         message = "Data di General Approval gagal dihapus",
                         title = "Approval Sukses dengan Tapi",
@@ -170,7 +212,7 @@ namespace Prodept.Controllers
             }
             else
             {
-                var res = new CustomResponse()
+                var res = new CustomResponse
                 {
                     data = JsonConvert.SerializeObject(resproj.Content),
                     message = "Gagal dilakukan approval. Error Code: " + resproj.StatusCode,

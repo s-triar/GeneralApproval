@@ -5,7 +5,7 @@ import { RequestList } from '../models/request-list';
 const rl: DataDaftar[] = [];
 for (let index = 0; index < Math.floor(Math.random() * 100); index++) {
   const r: DataDaftar = {
-
+    displayed: false,
     id: index.toString(),
     status: 'menunggu approval',
     subtitle: 'subtitle',
@@ -19,7 +19,7 @@ for (let index = 0; index < 4; index++) {
   const rs: DataDaftar[] = [];
   for (let inx = 0; inx < Math.floor(Math.random() * 100); inx++) {
     const r: DataDaftar = {
-
+      displayed: false,
       id: inx.toString(),
       status: 'menunggu approval',
       subtitle: 'subtitle',

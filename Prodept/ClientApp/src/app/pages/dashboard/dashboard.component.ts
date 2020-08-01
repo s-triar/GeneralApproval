@@ -8,6 +8,7 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
 import { tap } from 'rxjs/operators';
 import { CustomResponse } from 'src/app/models/custom-response';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,7 +24,8 @@ export class DashboardComponent implements OnInit {
     private _tokenService: TokenService,
     private _notifService: NotifService,
     private _snackBar: MatSnackBar,
-    private _userService: UserService
+    private _userService: UserService,
+    private _deviceService: DeviceDetectorService,
   ) { }
 
   ngOnInit(): void {
@@ -51,8 +53,9 @@ export class DashboardComponent implements OnInit {
     .then(sub => {
       const key = JSON.stringify(sub);
       const nik = this._tokenService.getNik();
+      const deviceInfo = this._deviceService.getDeviceInfo();
       if (nik !== null) {
-        this._notifService.AddSubscription(key, nik).subscribe();
+        this._notifService.AddSubscription(key, nik, deviceInfo.browser, deviceInfo.device, deviceInfo.os).subscribe();
       }
      })
     .catch(err => console.log(err))

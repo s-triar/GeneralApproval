@@ -65,6 +65,7 @@ namespace Prodept.Commons.Services
         public IEnumerable<RequestList> GetListRequest(string Nik, string ApiName)
         {
             return this._context.RequestLists.Where(x => x.ApiName == ApiName && x.Nik == Nik)
+                                .OrderBy(x=>x.CreatedAt)
                                 .Select(x=> new RequestList { 
                                     ApiName = x.ApiName,
                                     Category = x.Category,
@@ -76,7 +77,9 @@ namespace Prodept.Commons.Services
                                     SubTitle = x.SubTitle,
                                     UrlAction = null,
                                     UrlProject = null,
-                                    ProjectName = x.ProjectName
+                                    ProjectName = x.ProjectName,
+                                    CreatedAt = x.CreatedAt,
+                                    Displayed = x.Displayed
                                 }).AsEnumerable();
         }
 

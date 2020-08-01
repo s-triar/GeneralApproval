@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ViewChild, ComponentFactoryResolver, ComponentFactory, ComponentRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { dataDetail1, exampleMou } from 'src/app/datas/detail-data';
 import { Detail } from 'src/app/models/detail-data';
 import { ApprovalService } from 'src/app/services/approval.service';
@@ -6,13 +6,16 @@ import { tap } from 'rxjs/operators';
 import { Decision } from 'src/app/models/decision';
 import { DecisionData } from 'src/app/models/decision-data';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { WarningRequiredComponent } from 'src/app/components/warning-required/warning-required.component';
 import { DataUpload } from 'src/app/models/data-upload';
 import { RequiredWhenType } from 'src/app/models/enums/required-when-type.enum';
 import { ProjectService } from 'src/app/services/project.service';
 import { RequestList } from 'src/app/models/request-list';
+import { GeneratorDetailComponent } from 'src/app/components/generator-detail/generator-detail.component';
+import { ApprovalConfirmationComponent } from 'src/app/components/approval-confirmation/approval-confirmation.component';
+import { ListProjectService } from 'src/app/services/list-project.service';
 
 @Component({
   selector: 'app-detail',
@@ -20,19 +23,23 @@ import { RequestList } from 'src/app/models/request-list';
   styleUrls: ['./detail.component.scss'],
 })
 export class DetailComponent implements OnInit {
-  data: Detail ; // = exampleMou;
+  data: Detail = exampleMou;
   dataUpload: DataUpload[] = [];
   dataDecision: boolean;
   apiName: string;
   id: string;
   projectName: string;
+
   constructor(
     private _approvalService: ApprovalService,
     private _authService: AuthService,
     private _activatedRoute: ActivatedRoute,
     private _dialog: MatDialog,
-    private _projectService: ProjectService
-    ) {}
+    private _projectService: ProjectService,
+    private _router: Router,
+    private _listProjectService: ListProjectService,
+    ) {
+    }
 
   ngOnInit(): void {
     this.apiName = this._activatedRoute.snapshot.params['apiName'];
@@ -55,7 +62,11 @@ export class DetailComponent implements OnInit {
     p.id = this.id;
     this._projectService.getDetailRequestProject(p).subscribe((x: RequestList) => {
       const det = JSON.parse(x.detail);
-      this.data = det;
+      this.data.data = det;
+      this.data.title = x.title;
+      this.data.subtitle = x.subTitle;
+      this.data.link = x.urlAction;
+      this.data.urlProject = x.urlProject;
       this.projectName = x.projectName;
       this.sortForm();
     });
@@ -77,7 +88,6 @@ export class DetailComponent implements OnInit {
   }
 
   checkDataFormUpload(): boolean {
-    // console.log(this.dataUpload);
     let safe = true;
     const key = 'required';
     for (const iterator of this.data.data) {
@@ -114,7 +124,8 @@ export class DetailComponent implements OnInit {
     const resCheck = this.checkDataFormUpload();
     if (resCheck) {
       const q = this.generateDataUpload();
-      console.log(q);
+      this.openConfirmationModal(q);
+
     }
   }
   notApprove() {
@@ -122,11 +133,23 @@ export class DetailComponent implements OnInit {
     const resCheck = this.checkDataFormUpload();
     if (resCheck) {
       const q = this.generateDataUpload();
-      console.log(q);
+      this.openConfirmationModal(q);
     }
   }
   // Todo Modal Confirmation
-  // Todo Clear approval service data
+  openConfirmationModal(data: Decision) {
+    const modal = this._dialog.open(ApprovalConfirmationComponent, {
+      data: data
+    });
+    modal.afterClosed().subscribe(x => {
+      if (x === true) {
+        this._listProjectService.trigger.next(true);
+        this._approvalService.clear();
+        this._router.navigate(['/list', this.apiName, this.projectName], {replaceUrl: true});
+      }
+    });
+  }
+
   openWarningModal(message: string) {
     this._dialog.open(WarningRequiredComponent, {
       data: { message: message },
@@ -134,10 +157,10 @@ export class DetailComponent implements OnInit {
   }
   goToOriginal() {
     let url = this.data.urlProject;
-    if (url && url.indexOf('http') === -1) {
+    if (url && !url.includes('http')) {
       url = `//${url}`;
     }
-    window.open('//' + url, '_blank');
+    window.open(url, '_blank');
   }
 
 

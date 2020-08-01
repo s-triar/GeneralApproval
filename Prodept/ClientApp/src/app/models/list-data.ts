@@ -5,6 +5,7 @@ export class DataDaftar {
   title: string;
   status: string;
   subtitle: string;
+  displayed: boolean;
 }
 
 export class Daftar {

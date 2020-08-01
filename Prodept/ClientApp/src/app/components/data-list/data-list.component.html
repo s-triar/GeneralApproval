@@ -13,9 +13,13 @@
       <mat-icon>search</mat-icon>
     </button>
   </div>
-  <mat-list class="data-list">
-    <mat-list-item *ngFor="let d of data" (click)="goToDetail(d.id)">
-      <div
+  <mat-nav-list class="data-list">
+    <a mat-list-item *ngFor="let d of data" matRipple  [routerLink]="['/detail', apiname, d.id]">
+      <div matLine style="white-space: initial; word-wrap: break-word;">{{ d.title }}</div>
+      <div matLine style="white-space: initial; word-wrap: break-word;">{{ d.subtitle }}</div>
+      <div class="mat-caption">{{d.status}}</div>
+      <div><mat-icon color="warn">announcement</mat-icon></div>
+      <!-- <div
         fxLayout="row"
         fxLayoutAlign="start center"
         fxLayoutGap="2px"
@@ -31,7 +35,7 @@
           <div class="mat-caption">{{ d.subtitle }}</div>
         </div>
         <div fxFlex>{{ d.status }}</div>
-      </div>
-    </mat-list-item>
-  </mat-list>
+      </div> -->
+    </a>
+  </mat-nav-list>
 </div>

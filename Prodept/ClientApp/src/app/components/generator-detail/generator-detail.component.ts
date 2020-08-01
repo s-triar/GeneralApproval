@@ -20,23 +20,12 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./generator-detail.component.scss'],
 })
 export class GeneratorDetailComponent implements OnInit {
-  @Input() datas: (
-    | FormTable
-    | FormCheckBox
-    | FormDate
-    | FormFile
-    | FormInput
-    | FormList
-    | FormRadio
-    | FormSelect
-    | FormTextArea
-    | FormGroup
-    | FormAutoComplete
-  )[];
+  @Input() datas: any;
   types = DetailDataType;
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
   isFormGroup(data) {
     return data === this.types.FORMGROUP;
   }
@@ -69,5 +58,8 @@ export class GeneratorDetailComponent implements OnInit {
   }
   isFormAutoComplete(data) {
     return data === this.types.AUTOCOMPLETE;
+  }
+  isFormImage(data) {
+    return data === this.types.IMAGE;
   }
 }

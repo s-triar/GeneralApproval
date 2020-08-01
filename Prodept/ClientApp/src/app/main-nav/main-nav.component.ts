@@ -15,6 +15,7 @@ import { MatInput } from '@angular/material/input';
 import { ProjectService } from '../services/project.service';
 import { ProjectList } from '../models/project-list';
 import { async } from '@angular/core/testing';
+import { ListProjectService } from '../services/list-project.service';
 
 @Component({
   selector: 'app-main-nav',
@@ -38,6 +39,7 @@ export class MainNavComponent implements OnInit, OnDestroy {
   constructor(
     private cdr: ChangeDetectorRef,
     private breakpointObserver: BreakpointObserver,
+    private _listProjectService: ListProjectService,
     private _renderer: Renderer2,
     private _themeService: ThemeService,
     private _authService: AuthService,
@@ -48,10 +50,11 @@ export class MainNavComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngOnInit() {
+
     this.theme$ = this._themeService.currentTheme$;
     this.user$ = this._authService.user$;
     this.fetchProject();
-    fromEvent(this.searchbar.nativeElement, 'keyup').pipe(
+    fromEvent(this.searchbar.nativeElement, 'change').pipe(
       map((event: any) => {
         return event.target.value;
       }),
@@ -60,6 +63,19 @@ export class MainNavComponent implements OnInit, OnDestroy {
     ).subscribe((text: string) => {
       this.isSearching = true;
       this._projectService.getListProject(text).subscribe(
+        res => {
+          this.isSearching = false;
+          this.items = res;
+        },
+        err => {
+          this.isSearching = false;
+        }
+      );
+    });
+
+    this._listProjectService.trigger$.subscribe(x => {
+      this.isSearching = true;
+      this._projectService.getListProject(this.searchbar.nativeElement.value).subscribe(
         res => {
           this.isSearching = false;
           this.items = res;
@@ -99,14 +115,13 @@ export class MainNavComponent implements OnInit, OnDestroy {
 
   clearSearchBar() {
     this.searchbar.nativeElement.value = '';
+    this.searchbar.nativeElement.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
   fetchProject() {
 
     this._authService.user$.subscribe(x => {
       const nik = x.nik;
-      console.log(nik);
-
       if (nik !== null && nik !== '' && nik !== undefined ) {
         let val = this.searchbar.nativeElement.value;
         if (val === null) {

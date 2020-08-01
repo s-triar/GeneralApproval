@@ -46,7 +46,6 @@ startTouchMove() {
         (e: TouchEvent) => {
             this.endTime = new Date().getTime();
             const speed = (Math.abs(e.touches[0].clientX - this.startX) / ((this.endTime - this.startTime) % 10)) / 2 ;
-            // console.log(speed);
             this.sidebar._width >= 80 ? this.setWidth.emit(300) : '';
             let w = this.sidebar._width;
             this.sidebar._width <= 300 ? this.setWidth.emit ( w += (0.5 + speed)) : '';

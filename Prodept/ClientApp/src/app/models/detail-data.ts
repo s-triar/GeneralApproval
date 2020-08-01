@@ -1,5 +1,13 @@
 import { DetailDataType } from './enums/detail-data-enum';
 
+export class FormImage {
+  index: number;
+  label: string;
+  link: string;
+  type: string = DetailDataType.IMAGE;
+  fileName: string;
+}
+
 export class FormInput {
   index: number;
   type: string = DetailDataType.INPUT;
@@ -21,8 +29,9 @@ export class FormFile {
 
 export class FormFileItem {
   link: string;
-  data: string;
+  fileName: string;
   label: string;
+  typeDoc: string;
 }
 
 export class FormDate {
@@ -49,7 +58,7 @@ export class FormCheckBox {
 
 export class FormCheckBoxItem {
   disabled: boolean;
-  checked: boolean;
+  checkSign: boolean;
   label: string;
   data: string;
 }
@@ -147,17 +156,5 @@ export class Detail {
   subtitle: string;
   link: string;
   urlProject: string;
-  data: (
-    | FormTable
-    | FormCheckBox
-    | FormDate
-    | FormFile
-    | FormInput
-    | FormList
-    | FormRadio
-    | FormSelect
-    | FormTextArea
-    | FormGroup
-    | FormAutoComplete
-  )[];
+  data: any;
 }

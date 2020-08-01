@@ -38,11 +38,6 @@ namespace Prodept.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromBody] UserLogin user)
         {
-            //HttpClientHandler clientHandler = new HttpClientHandler();
-            //clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-
-            //// Pass the handler to httpclient(from you are calling api)
-            //HttpClient client = new HttpClient(clientHandler);
             var server = _httpClientFactory.CreateClient(AppEnum.AuthCentralHttp);
             var discoveryDoc = await server.GetDiscoveryDocumentAsync(this._config.GetSection("CentralAuth").Value);
             var tokenRes = await server.RequestPasswordTokenAsync(

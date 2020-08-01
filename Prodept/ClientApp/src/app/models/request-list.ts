@@ -10,4 +10,6 @@ export class RequestList {
     status: string;
     detail: string;
     urlAction: string;
+    createdAt: Date;
+    displayed: boolean;
 }

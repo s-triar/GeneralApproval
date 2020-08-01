@@ -16,6 +16,5 @@ export class UserSideNavComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.Url);
   }
 }

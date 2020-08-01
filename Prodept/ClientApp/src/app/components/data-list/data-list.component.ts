@@ -15,17 +15,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DataListComponent implements OnInit {
   @Input() data: DataDaftar[];
+  apiname: string;
   constructor(
     private _router: Router,
     private _activatedRoute: ActivatedRoute
     ) {}
 
   ngOnInit(): void {
-    
+    this.apiname = this._activatedRoute.snapshot.params['apiName'];
   }
 
   goToDetail(id) {
-    const apiname = this._activatedRoute.snapshot.params['apiName'];
-    this._router.navigate(['/detail', apiname, id]);
+
+    this._router.navigate(['/detail', this.apiname, id]);
   }
 }

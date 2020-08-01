@@ -4,7 +4,7 @@
     color="primary"
     *ngFor="let item of data.data"
     [disabled]="item.disabled"
-    [checked]="item.checked"
+    [checked]="item.checkSign"
     [value]="item.data"
     [name]="data.name"
     (change)="checkStatus($event)"

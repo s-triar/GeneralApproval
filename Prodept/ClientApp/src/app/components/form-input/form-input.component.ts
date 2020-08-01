@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { FormInput } from 'src/app/models/detail-data';
 import { ApprovalService } from 'src/app/services/approval.service';
 import { MatInput } from '@angular/material/input';

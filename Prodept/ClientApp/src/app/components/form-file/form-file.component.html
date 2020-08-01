@@ -20,7 +20,7 @@
       >
         <div fxFlex="fill">{{ item.label }}</div>
 
-        <button mat-icon-button color="primary">
+        <button mat-icon-button color="primary" (click)="download(item.fileName, item.link, item.typeDoc)">
           <mat-icon>get_app</mat-icon>
         </button>
       </div>

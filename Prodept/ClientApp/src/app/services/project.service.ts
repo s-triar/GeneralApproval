@@ -6,6 +6,7 @@ import { QueryStringBuilder } from '../utils/query-string-builder';
 import { AutoCompleteRequest } from '../models/autocomplete-request';
 import { CustomResponse } from '../models/custom-response';
 import { FormAutoCompleteItem } from '../models/detail-data';
+import { Decision } from '../models/decision';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,21 @@ export class ProjectService {
     header = header.set('reqnonotify', 'true');
     return this._http.get<CustomResponse<FormAutoCompleteItem[]>>(`api/Internal/GetAutoCompleteListData?${params}`, {headers: header});
   }
+  getImageData(link: string, fileName: string) {
+    let header: HttpHeaders = new HttpHeaders();
+    header = header.set('reqnoloadingdialog', 'true');
+    header = header.set('reqnonotify', 'true');
+    return this._http.get(`api/Internal/GetImageData`, {headers: header, responseType: 'blob', params: {link: link, fileName: fileName}});
+  }
 
+  getFileData(link: string, type: string, fileName: string) {
+    let header: HttpHeaders = new HttpHeaders();
+    header = header.set('reqnoloadingdialog', 'true');
+    header = header.set('reqnonotify', 'true');
+    return this._http.get(`api/Internal/GetFileData`, {headers: header, responseType: 'blob', params: {link: link, typeDoc: type, fileName: fileName}});
+  }
+
+  submitDecision(payload: Decision) {
+    return this._http.post(`api/Internal/SendDecision`, payload);
+  }
 }

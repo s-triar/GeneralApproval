@@ -16,7 +16,7 @@ export class FormCheckboxComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.required === true) {
       for (const item of this.data.data) {
-        if (item.checked) {
+        if (item.checkSign) {
           this._approvalService.addPair(this.data.name, item.data);
         }
       }

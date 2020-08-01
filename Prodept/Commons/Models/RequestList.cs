@@ -27,5 +27,7 @@ namespace Prodept.Commons.Models
         public string Status { get; set; }
         public string Detail { get; set; }
         public string UrlAction { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public bool Displayed { get; set; }
     }
 }

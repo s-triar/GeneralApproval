@@ -7,12 +7,16 @@ import { DataUpload } from '../models/data-upload';
 })
 export class ApprovalService {
   decision: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  data: BehaviorSubject<DataUpload[]> = new BehaviorSubject<DataUpload[]>([]);
   decision$: Observable<boolean> = this.decision.asObservable();
+  
+  data: BehaviorSubject<DataUpload[]> = new BehaviorSubject<DataUpload[]>([]);
   data$: Observable<DataUpload[]> = this.data.asObservable();
   constructor() { }
 
-  // TODO Check datetime range if they both are filled
+  clear() {
+    this.decision.next(false);
+    this.data.next([]);
+  }
 
   add(name: string, value: any) {
     const d = this.data.getValue();

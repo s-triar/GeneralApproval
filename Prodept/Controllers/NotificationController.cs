@@ -35,7 +35,7 @@ namespace Prodept.Controllers
                     ret.ok = true;
                     ret.data = null;
                     ret.title = "Pendaftaran Browser Key Sukses";
-                    this.notif.sendNotif(ClientBrowser.Nik, "General Approval", "Terima kasih telah subscribe");
+                    //this.notif.sendNotif(ClientBrowser.Nik, "General Approval", "Terima kasih telah subscribe");
                     return Ok(ret);
                 }
                 else
@@ -68,7 +68,7 @@ namespace Prodept.Controllers
             var s = HttpContext.User.Claims;
             var k = s.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
             var nik = k.Value;
-            this.notif.sendNotif(nik, "General Approval", "Coba kirim pesan\nKepadamu");
+            this.notif.sendNotif(nik, "General Approval", "Testing Notif");
         }
     }
 }
