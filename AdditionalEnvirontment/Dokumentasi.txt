@@ -21,5 +21,5 @@ untuk mengakses/memakai General Approval:
 4. lihat cara akses dan model/class di projek cobamvc (untuk yang memakai .net core improve dari itu) di CobaController dan perhatikan juga di startup serta ClaimsAuthorizeAttribute jika ingin menspesifikkan role user
    untuk projek yang memakai selain .net mvc dan .net core coba liat endpoint di {URI CENTRAL AUTH}/.well-known/openid-configuration
    dan selebihnya seperti di projek cobamvc
-
+   kamu bisa download cobamvc di sini https://github.com/s-triar/ClientForGeneralApproval
 
