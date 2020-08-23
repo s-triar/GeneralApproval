@@ -29,5 +29,6 @@ namespace Prodept.Commons.Models
         public string UrlAction { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool Displayed { get; set; }
+        public bool readOnlyOnce { get; set; }
     }
 }

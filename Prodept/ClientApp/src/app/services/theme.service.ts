@@ -20,7 +20,7 @@ export class ThemeService {
 
   private ChangeState(savedTheme: string): void {
     const theme: Theme = {
-      IsDefault: savedTheme === 'dark',
+      IsDefault: savedTheme === 'light',
       ThemeName: 'dark-theme'
     };
     this.currentTheme.next(theme);
@@ -33,7 +33,7 @@ export class ThemeService {
   }
 
   ToggleTheme(renderer: Renderer2): void {
-    this.SetPreferTheme(!this.currentTheme.getValue().IsDefault);
+    this.SetPreferTheme(this.currentTheme.getValue().IsDefault);
     this.ApplyTheme(renderer);
   }
 

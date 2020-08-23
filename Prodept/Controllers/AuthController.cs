@@ -57,7 +57,7 @@ namespace Prodept.Controllers
                 var res = new CustomResponse()
                 {
                     message = tokenRes.Exception.Message,
-                    title = "Login Gagal",
+                    title = "Error",
                     ok = false,
                 };
                 return BadRequest(res);
@@ -67,7 +67,7 @@ namespace Prodept.Controllers
                 var res = new CustomResponse()
                 {
                     message = "Pengguna berhasil masuk",
-                    title = "Login Berhasil",
+                    title = "Success",
                     ok = true,
                     data = tokenRes.AccessToken
                 };

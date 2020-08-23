@@ -62,7 +62,20 @@ namespace Prodept.Controllers
             var k = s.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
             var nik = k.Value;
             data.Nik = nik;
-            return this._projectReqservice.GetSpecificId(data);
+            var detail =  this._projectReqservice.GetSpecificId(data);
+            if(detail.readOnlyOnce == false)
+            {
+                detail.Displayed = true;
+                this._projectReqservice.Update(detail);
+                var i = this._projectReqservice.save();
+            }
+            else
+            {
+                this._projectReqservice.Remove(detail);
+                var i = this._projectReqservice.save();
+            }
+
+            return detail;
         }
 
         [Authorize]

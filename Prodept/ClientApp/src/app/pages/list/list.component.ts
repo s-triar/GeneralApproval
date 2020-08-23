@@ -27,12 +27,18 @@ export class ListComponent implements OnInit {
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private _projectService: ProjectService
-    ) {}
+  ) {
+    this._router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.apiName = this._activatedRoute.snapshot.params['apiName'];
+        this.data.title = this._activatedRoute.snapshot.params['projectName'];
+        this.fetchData();
+      }
+    });
+  }
 
   ngOnInit(): void {
-    this.apiName = this._activatedRoute.snapshot.params['apiName'];
-    this.data.title = this._activatedRoute.snapshot.params['projectName'];
-    this.fetchData();
+
   }
 
   fetchData() {

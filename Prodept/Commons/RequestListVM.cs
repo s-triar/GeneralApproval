@@ -22,6 +22,7 @@ namespace Prodept.Commons
         public string Status { get; set; }
         public string Detail { get; set; }
         public string UrlAction { get; set; }
+        public bool ReadOnlyOnce { get; set; }
         public MessageNotif DataNotif { get; set; }
     }
 }

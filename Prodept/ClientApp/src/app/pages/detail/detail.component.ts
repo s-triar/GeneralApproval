@@ -100,15 +100,15 @@ export class DetailComponent implements OnInit {
             }
           });
           if (c.length === 0) {
-            if (iterator['requiredWhen'] === RequiredWhenType.APPROVE && this.dataDecision === true) {
+            if ((iterator['requiredWhen'] === RequiredWhenType.APPROVE) && (this.dataDecision === true)) {
               safe = false;
               this.openWarningModal(`${iterator['label']} harus diisi!`);
               break;
-            } else if (iterator['requiredWhen'] === RequiredWhenType.NOT_APPROVE && this.dataDecision === false) {
+            } else if ((iterator['requiredWhen'] === RequiredWhenType.NOT_APPROVE) && (this.dataDecision === false)) {
               safe = false;
               this.openWarningModal(`${iterator['label']} harus diisi!`);
               break;
-            } else {
+            } else if ((iterator['requiredWhen'] === RequiredWhenType.BOTH) || (iterator['requiredWhen'] === null)) {
               safe = false;
               this.openWarningModal(`${iterator['label']} harus diisi!`);
               break;

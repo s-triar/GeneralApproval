@@ -12,7 +12,7 @@ export class UserService {
   }
   getUserDetail(): Observable<any> {
     let header: HttpHeaders = new HttpHeaders();
-    header = header.set('reqnoloadingdialog', 'true');
+    // header = header.set('reqnoloadingdialog', 'true');
     header = header.set('reqnonotify', 'true');
     // const tokenRaw = this._tokenService.getToken();
     return this._http.get(`api/Auth/GetUserProfile`, {headers: header} );

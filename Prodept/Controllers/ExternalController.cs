@@ -39,6 +39,7 @@ namespace Prodept.Controllers
                     temp.ApiName = data.ApiName;
                     temp.Nik = data.Nik;
                     temp.Id = data.Id;
+                    temp.Category = data.Category;
                     temp.Detail = data.Detail;
                     temp.ProjectName = data.ProjectName;
                     temp.Status = data.Status;
@@ -47,6 +48,7 @@ namespace Prodept.Controllers
                     temp.UrlAction = data.UrlAction;
                     temp.UrlProject = data.UrlProject;
                     temp.Displayed = false;
+                    temp.readOnlyOnce = data.ReadOnlyOnce;
                     temp.CreatedAt = DateTime.Now;
                     var check = this._projectReqservice.GetSpecificId(temp);
                     if (check != null)
@@ -59,8 +61,8 @@ namespace Prodept.Controllers
                         check.UrlAction = data.UrlAction;
                         check.UrlProject = data.UrlProject;
                         check.ProjectName = data.ProjectName;
-                        check.Displayed = false;
-                        check.CreatedAt = DateTime.Now;
+                        check.readOnlyOnce = data.ReadOnlyOnce;
+
                         this._projectReqservice.Update(check);
                         r = this._projectReqservice.save();
                     }
