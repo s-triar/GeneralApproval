@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Login } from '../models/auth';
 import { User } from '../models/user';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -24,8 +24,11 @@ export class AuthService {
     return this._http.post<any>('api/Auth/Login', payload);
   }
 
-  logout(): Observable<any> {
-    return this._http.post('api/Auth/Logout', {});
+  logout(nik: string, browser: string, device: string, os: string): Observable<any> {
+    let header: HttpHeaders = new HttpHeaders();
+    header = header.set('reqnoloadingdialog', 'true');
+    header = header.set('reqnonotify', 'true');
+    return this._http.post('api/Auth/Logout', {nik: nik, browser: browser, device: device, os: os  },  {headers: header} );
   }
 
   setLoggedUser() {

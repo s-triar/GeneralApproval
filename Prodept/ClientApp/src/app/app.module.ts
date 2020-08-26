@@ -132,7 +132,7 @@ export const MY_FORMATS = {
     MaterialModule,
     HttpClientModule,
     ReactiveFormsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
+    ServiceWorkerModule.register('custom-service-worker.js', {
       enabled: environment.production,
     }),
     DeviceDetectorModule

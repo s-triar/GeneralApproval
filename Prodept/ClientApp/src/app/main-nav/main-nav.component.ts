@@ -16,6 +16,7 @@ import { ProjectService } from '../services/project.service';
 import { ProjectList } from '../models/project-list';
 import { async } from '@angular/core/testing';
 import { ListProjectService } from '../services/list-project.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-main-nav',
@@ -45,7 +46,9 @@ export class MainNavComponent implements OnInit, OnDestroy {
     private _authService: AuthService,
     private _tokenService: TokenService,
     private _router: Router,
-    private _projectService: ProjectService
+    private _projectService: ProjectService,
+    private _deviceService: DeviceDetectorService,
+
   ) {}
   ngOnDestroy(): void {}
 
@@ -94,14 +97,18 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this._authService
-                                .logout()
+    const deviceInfo = this._deviceService.getDeviceInfo();
+    const nik = this._tokenService.getNik();
+    const subs = this._authService
+                                .logout(nik, deviceInfo.browser, deviceInfo.device, deviceInfo.os)
                                 .subscribe(
                                   (x: CustomResponse<any>) => {
                                     this.leftsidenav.close();
                                     this._authService.clearStateUser();
+                                    subs.unsubscribe();
                                   },
                                   (err: HttpErrorResponse) => {
+                                    subs.unsubscribe();
                                   },
                                   () => {
                                     console.log('Form Logout Observer got a complete notification');

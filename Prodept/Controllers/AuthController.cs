@@ -26,12 +26,16 @@ namespace Prodept.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IProjectRequestService _projectReqservice;
         private readonly IConfiguration _config;
+        private readonly INotificationService notif;
 
-        public AuthController(IHttpClientFactory httpClientFactory, IProjectRequestService projectReqservice, IConfiguration config)
+
+        public AuthController(IHttpClientFactory httpClientFactory, IProjectRequestService projectReqservice, IConfiguration config, INotificationService notif)
         {
             _httpClientFactory = httpClientFactory;
             _projectReqservice = projectReqservice;
             _config = config;
+            this.notif = notif;
+
         }
 
         //Todo Login
@@ -77,8 +81,9 @@ namespace Prodept.Controllers
         //Todo Logout
         [Authorize]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> Logout([FromBody] UserDeviceVM ClientBrowser)
         {
+            var fal = this.notif.remove(ClientBrowser.Nik, ClientBrowser.Browser, ClientBrowser.Device, ClientBrowser.Os);
             return Ok();
         }
 

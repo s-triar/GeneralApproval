@@ -46,6 +46,20 @@ namespace Prodept.Commons.Services
 
         }
 
+        public int remove(string username, string browser, string device, string os)
+        {
+            var temp = this._context.UserDevices.FirstOrDefault(x => x.Nik == username && x.Browser == browser && x.Device == device && x.Os == os);
+            if (temp != null)
+            {
+                this._context.UserDevices.Remove(temp);
+                return this._context.SaveChanges();
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public void sendNotif(string nik, string title, string message)
         {
             var webPushClient = new WebPushClient();
@@ -123,8 +137,10 @@ namespace Prodept.Commons.Services
                             data = new
                             {
                                 apiName = apiName,
-                                id= id
-                            }
+                                id= id,
+                                url = string.Format("/detail/{0}/{1}", apiName, id)
+                            },
+                            
                         }
                     };
                     webPushClient.SendNotification(subscription, JsonConvert.SerializeObject(options), vapidDetails);

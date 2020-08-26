@@ -12,7 +12,7 @@ export class NotifService {
   AddSubscription(key: string, nik: string, browser: string, device: string, os: string): Observable<any> {
     let header: HttpHeaders = new HttpHeaders();
     header = header.set('reqnoloadingdialog', 'true');
-    header = header.set('reqnonotify', 'true');
+    // header = header.set('reqnonotify', 'true');
     // const tokenRaw = this._tokenService.getToken();
     return this._http.post(`api/Notification/Add`, {key: key, nik: nik, browser: browser, device: device, os: os  }, {headers: header} );
   }
